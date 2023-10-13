@@ -1,0 +1,8 @@
+# This is a CODEOWNERS file.
+# It maps files and directories to the people responsible for them.
+
+# Directories
+/backend/ @SakshiPandey97
+/frontend/ @Vishal-Prakash-1
+/backend/ @Dhruv-mak
+/frontend/ @Dhruv-mak
