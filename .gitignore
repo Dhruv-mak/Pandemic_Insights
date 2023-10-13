@@ -1,0 +1,11 @@
+# Python backend
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+/backend/ven*
+# Node.js frontend
+node_modules/
