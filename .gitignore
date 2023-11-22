@@ -9,3 +9,5 @@ build/
 /backend/ven*
 # Node.js frontend
 node_modules/
+
+.env
