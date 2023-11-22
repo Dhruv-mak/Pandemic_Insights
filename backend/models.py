@@ -1,5 +1,5 @@
 from db import db_obj
-from sqlalchemy import text, PrimaryKeyConstraint, String, Float, Integer
+from sqlalchemy import text, PrimaryKeyConstraint, String, Float, Integer, DATE
 BASE = db_obj.BASE
 from sqlalchemy.orm import Mapped, mapped_column
 import datetime
@@ -25,7 +25,7 @@ class AQI(BASE):
     
 class Cases(BASE):
     __tablename__ = "Cases"
-    date = mapped_column(String(50))
+    date = mapped_column(DATE)
     location = mapped_column(String(50))
     new_cases = mapped_column(String(50))
     new_deaths = mapped_column(String(50))
@@ -36,7 +36,7 @@ class Cases(BASE):
 
 class Mortality(BASE):
     __tablename__ = "Mortality"
-    date = mapped_column(String(50))
+    date = mapped_column(DATE)
     country = mapped_column(String(50))
     cumulative_estimated_daily_excess_death = mapped_column(Float)
     cumulative_estimated_daily_excess_deaths_per_100k = mapped_column(Float)
@@ -58,7 +58,7 @@ class Population(BASE):
 
 class Vaccination(BASE):
     __tablename__ = "Vaccination"
-    date = mapped_column(String(50))
+    date = mapped_column(DATE)
     location = mapped_column(String(50))
     total_vaccinations = mapped_column(Integer)
     people_vaccinated = mapped_column(Integer)
@@ -71,7 +71,7 @@ class Vaccination(BASE):
 
 class StringencyIndex(BASE):
     __tablename__ = "StringencyIndex"
-    date = mapped_column(String(50))
+    date = mapped_column(DATE)
     country = mapped_column(String(50))
     StringencyIndex_Avg = mapped_column(Float)
     
