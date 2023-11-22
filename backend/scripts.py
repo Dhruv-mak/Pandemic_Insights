@@ -5,6 +5,7 @@ from db import db_obj
 import os
 from models import AQI, Cases, Mortality, Population, Vaccination, StringencyIndex
 import csv
+import datetime
 
 cli_bp = Blueprint("table_master", __name__)
 
@@ -44,8 +45,10 @@ def populate_mortality(table_name):
         next(reader)
         session = db_obj.get_session()
         for row in reader:
+            # Convert the date string to a datetime.date object
+            date = datetime.datetime.strptime(row[0], "%m/%d/%Y").date()
             record = Mortality(
-                date=row[0],
+                date=date,
                 country=row[1],
                 cumulative_estimated_daily_excess_death=row[2],
                 cumulative_estimated_daily_excess_deaths_per_100k=row[3],
@@ -73,8 +76,10 @@ def populate_cases(table_name):
         next(reader)
         session = db_obj.get_session()
         for row in reader:
+            # Convert the date string to a datetime.date object
+            date = datetime.datetime.strptime(row[0], "%m/%d/%Y").date()
             record = Cases(
-                date=row[0],
+                date=date,
                 location=row[1],
                 new_cases=row[2],
                 new_deaths=row[3]
@@ -125,8 +130,10 @@ def populate_vaccination(table_name):
         next(reader)
         session = db_obj.get_session()
         for row in reader:
+            # Convert the date string to a datetime.date object
+            date = datetime.datetime.strptime(row[0], "%m/%d/%Y").date()
             record = Vaccination(
-                date=row[0],
+                date=date,
                 location=row[1],
                 total_vaccinations=row[2],
                 people_vaccinated=row[3],
@@ -154,8 +161,10 @@ def populate_stringency_index(table_name):
         next(reader)
         session = db_obj.get_session()
         for row in reader:
+            # Convert the date string to a datetime.date object
+            date = datetime.datetime.strptime(row[0], "%m/%d/%Y").date()
             record = StringencyIndex(
-                date=row[0],
+                date=date,
                 country=row[1],
                 StringencyIndex_Avg=row[2]
             )
