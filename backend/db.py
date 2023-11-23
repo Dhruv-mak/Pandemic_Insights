@@ -62,6 +62,9 @@ class DbUtils:
             elif table_name == "Testing":
                 from models import Testing
                 self.create_all(Testing.__table__)
+            elif table_name == 'Hospitalization':
+                from models import Hospitalization
+                self.create_all(Hospitalization.__table__)
         else:
             print(f"Table {table_name} already exists")
     
@@ -71,7 +74,7 @@ class DbUtils:
         else:
             print(f"Table {table_name} does not exist")
     
-    def grant_access(self, table_name: str, user_name: str):
+    def grant_access(self, table_name: s 5 conflicts tr, user_name: str):
         if self.check_table_exists(table_name):
             query = f'GRANT SELECT,INSERT,UPDATE,DELETE ON "{table_name}" TO "{user_name}"'
             self.execute_raw(query)
