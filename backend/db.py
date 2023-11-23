@@ -59,6 +59,9 @@ class DbUtils:
             elif table_name == "StringencyIndex":
                 from models import StringencyIndex
                 self.create_all(StringencyIndex.__table__)
+            elif table_name == 'Hospitalization':
+                from models import Hospitalization
+                self.create_all(Hospitalization.__table__)
         else:
             print(f"Table {table_name} already exists")
     
