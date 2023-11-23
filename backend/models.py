@@ -79,3 +79,12 @@ class StringencyIndex(BASE):
         PrimaryKeyConstraint("date", "country"),
     )
     
+class Testing(BASE):
+    __tablename__ = "Testing"
+    date = mapped_column(DATE)
+    country = mapped_column(String(50))
+    new_tests_smoothed = mapped_column(Integer)
+    
+    __table_args__ = (
+        PrimaryKeyConstraint("date", "country"),
+    )
