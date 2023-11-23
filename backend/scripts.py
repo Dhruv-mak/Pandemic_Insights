@@ -3,7 +3,7 @@ from flask import Flask, Blueprint
 from flask.cli import with_appcontext, cli
 from db import db_obj
 import os
-from models import AQI, Cases, Mortality, Population, Vaccination, StringencyIndex, Hospitalization
+from models import AQI, Cases, Mortality, Population, Vaccination, StringencyIndex, Hospitalization, Testing
 import csv
 import datetime
 
@@ -25,9 +25,10 @@ def populate_table(table_name):
         populate_vaccination(table_name)
     elif table_name == "StringencyIndex":
         populate_stringency_index(table_name)
+    elif table_name == "Testing":
+        populate_testing(table_name)
     elif table_name == 'Hospitalization':
         populate_hospitalization(table_name)
-    
         
 @cli_bp.cli.command("grant-access")
 @click.argument("table_name")
@@ -199,6 +200,34 @@ def populate_hospitalization(table_name):
                 country=row[1],
                 daily_hospital_occupancy=row[2],
                 daily_icu_occupancy=row[3]
+            )
+            session.add(record)
+        session.commit()
+        
+        session.close()
+def populate_testing(table_name):
+    """Populate a table with some data"""
+    # check if the table exists in the database
+    # if not, create it
+    # if yes, populate it with some data
+    exists = db_obj.check_table_exists(table_name)
+    if not exists:
+        db_obj.create_table(table_name)
+        click.echo(f"Table {table_name} created")
+    else:
+        click.echo(f"Table {table_name} already exists")
+    
+    with open(os.path.join("data/final_testing.csv")) as f:
+        reader = csv.reader(f)
+        next(reader)
+        session = db_obj.get_session()
+        for row in reader:
+            # Convert the date string to a datetime.date object
+            date = datetime.datetime.strptime(row[0], "%Y-%m-%d").date()
+            record = Testing(
+                date=date,
+                country=row[1],
+                new_tests_smoothed=row[2]
             )
             session.add(record)
         session.commit()
