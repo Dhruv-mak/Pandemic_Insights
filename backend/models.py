@@ -79,3 +79,13 @@ class StringencyIndex(BASE):
         PrimaryKeyConstraint("date", "country"),
     )
     
+class Hospitalization(BASE):
+    __tablename__ = "Hospitalization"
+    date = mapped_column(DATE)
+    country = mapped_column(String(50))
+    daily_hospital_occupancy = mapped_column(Integer)
+    daily_icu_occupancy = mapped_column(Integer)
+
+    __table_args__ = (
+        PrimaryKeyConstraint("date", "country"),
+    )
