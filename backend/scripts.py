@@ -3,7 +3,7 @@ from flask import Flask, Blueprint
 from flask.cli import with_appcontext, cli
 from db import db_obj
 import os
-from models import AQI, Cases, Mortality, Population, Vaccination, StringencyIndex, Hospitalization, Testing, Parameters
+from models import AQI, Cases, Mortality, Population, Vaccination, StringencyIndex, Hospitalization, Testing, Parameters, Emissions
 import csv
 import datetime
 
@@ -31,6 +31,8 @@ def populate_table(table_name):
         populate_hospitalization(table_name)
     elif table_name == 'Parameters':
         populate_parameters(table_name)
+    elif table_name == 'Emissions':
+        populate_emissions(table_name)
         
 @cli_bp.cli.command("grant-access")
 @click.argument("table_name")
@@ -258,6 +260,38 @@ def populate_parameters(table_name):
                 gdp_per_capita = row[1],
                 cardiovasc_death_rate = row[2],
                 diabetes_prevalence = row[3]
+            )
+            session.add(record)
+        session.commit()
+        session.close()
+
+def populate_emissions(table_name):
+    """Populate a table with some data"""
+    # check if the table exists in the database
+    # if not, create it
+    # if yes, populate it with some data
+    exists = db_obj.check_table_exists(table_name)
+    if not exists:
+        db_obj.create_table(table_name)
+        click.echo(f"Table {table_name} created")
+    else:
+        click.echo(f"Table {table_name} already exists")
+    
+    with open(os.path.join("data/final_emission.csv")) as f:
+        reader = csv.reader(f)
+        next(reader)
+        session = db_obj.get_session()
+        for row in reader:
+            record = Emissions(
+                country = row[0],
+                year = row[1],
+                total_emissions = row[2],
+                co2_emission_coal = row[3],
+                co2_emission_oil = row[4],
+                co2_emission_gas = row[5],
+                co2_emission_cement = row[6],
+                co2_emission_flaring = row[7],
+                co2_emission_per_capita = row[8]
             )
             session.add(record)
         session.commit()
