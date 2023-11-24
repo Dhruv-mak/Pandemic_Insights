@@ -3,7 +3,7 @@ from flask import Flask, Blueprint
 from flask.cli import with_appcontext, cli
 from db import db_obj
 import os
-from models import AQI, Cases, Mortality, Population, Vaccination, StringencyIndex, Hospitalization, Testing
+from models import AQI, Cases, Mortality, Population, Vaccination, StringencyIndex, Hospitalization, Testing, Parameters
 import csv
 import datetime
 
@@ -29,6 +29,8 @@ def populate_table(table_name):
         populate_testing(table_name)
     elif table_name == 'Hospitalization':
         populate_hospitalization(table_name)
+    elif table_name == 'Parameters':
+        populate_parameters(table_name)
         
 @cli_bp.cli.command("grant-access")
 @click.argument("table_name")
@@ -205,6 +207,7 @@ def populate_hospitalization(table_name):
         session.commit()
         
         session.close()
+        
 def populate_testing(table_name):
     """Populate a table with some data"""
     # check if the table exists in the database
@@ -228,6 +231,33 @@ def populate_testing(table_name):
                 date=date,
                 country=row[1],
                 new_tests_smoothed=row[2]
+            )
+            session.add(record)
+        session.commit()
+        session.close()
+
+def populate_parameters(table_name):
+    """Populate a table with some data"""
+    # check if the table exists in the database
+    # if not, create it
+    # if yes, populate it with some data
+    exists = db_obj.check_table_exists(table_name)
+    if not exists:
+        db_obj.create_table(table_name)
+        click.echo(f"Table {table_name} created")
+    else:
+        click.echo(f"Table {table_name} already exists")
+    
+    with open(os.path.join("data/final_parameters.csv")) as f:
+        reader = csv.reader(f)
+        next(reader)
+        session = db_obj.get_session()
+        for row in reader:
+            record = Parameters(
+                country = row[0],
+                gdp_per_capita = row[1],
+                cardiovasc_death_rate = row[2],
+                diabetes_prevalence = row[3]
             )
             session.add(record)
         session.commit()

@@ -83,6 +83,7 @@ class Testing(BASE):
     date = mapped_column(DATE)
     country = mapped_column(String(50))
     new_tests_smoothed = mapped_column(Integer)
+    
 class Hospitalization(BASE):
     __tablename__ = "Hospitalization"
     date = mapped_column(DATE)
@@ -91,4 +92,14 @@ class Hospitalization(BASE):
     daily_icu_occupancy = mapped_column(Integer)
     __table_args__ = (
         PrimaryKeyConstraint("date", "country"),
+    )
+
+class Parameters(BASE):
+    __tablename__ = "Parameters"
+    country = mapped_column(String(50))
+    gdp_per_capita = mapped_column(Float)
+    cardiovasc_death_rate = mapped_column(Float)
+    diabetes_prevalence = mapped_column(Float)
+    __table_args__ = (
+        PrimaryKeyConstraint("country"),
     )
