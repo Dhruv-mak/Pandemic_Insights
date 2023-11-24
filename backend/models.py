@@ -104,6 +104,7 @@ class Parameters(BASE):
     gdp_per_capita = mapped_column(Float)
     cardiovasc_death_rate = mapped_column(Float)
     diabetes_prevalence = mapped_column(Float)
+    hospital_beds_per_thousand = mapped_column(Float)
     __table_args__ = (
         PrimaryKeyConstraint("country"),
     )

@@ -259,7 +259,8 @@ def populate_parameters(table_name):
                 country = row[0],
                 gdp_per_capita = row[1],
                 cardiovasc_death_rate = row[2],
-                diabetes_prevalence = row[3]
+                diabetes_prevalence = row[3],
+                hospital_beds_per_thousand = row[4],
             )
             session.add(record)
         session.commit()
