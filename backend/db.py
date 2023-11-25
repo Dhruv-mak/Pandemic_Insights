@@ -24,9 +24,9 @@ class DbUtils:
         Session = sessionmaker(bind=self.engine)
         return Session()
     
-    def execute_raw(self, query: str):
+    def execute_raw(self, query: str, **kwargs: Any):
         session = self.get_session()
-        result = session.execute(text(query))
+        result = session.execute(text(query), kwargs)
         session.close()
         return result
     
