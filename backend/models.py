@@ -79,3 +79,47 @@ class StringencyIndex(BASE):
         PrimaryKeyConstraint("date", "country"),
     )
     
+class Testing(BASE):
+    __tablename__ = "Testing"
+    date = mapped_column(DATE)
+    country = mapped_column(String(50))
+    new_tests_smoothed = mapped_column(Integer)
+    __table_args__ = (
+        PrimaryKeyConstraint("date", "country"),
+    )
+    
+class Hospitalization(BASE):
+    __tablename__ = "Hospitalization"
+    date = mapped_column(DATE)
+    country = mapped_column(String(50))
+    daily_hospital_occupancy = mapped_column(Integer)
+    daily_icu_occupancy = mapped_column(Integer)
+    __table_args__ = (
+        PrimaryKeyConstraint("date", "country"),
+    )
+
+class Parameters(BASE):
+    __tablename__ = "Parameters"
+    country = mapped_column(String(50))
+    gdp_per_capita = mapped_column(Float)
+    cardiovasc_death_rate = mapped_column(Float)
+    diabetes_prevalence = mapped_column(Float)
+    hospital_beds_per_thousand = mapped_column(Float)
+    __table_args__ = (
+        PrimaryKeyConstraint("country"),
+    )
+
+class Emissions(BASE):
+    __tablename__ = "Emissions"
+    country = mapped_column(String(50))
+    year = mapped_column(Integer)
+    total_emissions = mapped_column(Float)
+    co2_emission_coal = mapped_column(Float)
+    co2_emission_oil = mapped_column(Float)
+    co2_emission_gas = mapped_column(Float)
+    co2_emission_cement = mapped_column(Float)
+    co2_emission_flaring = mapped_column(Float)
+    co2_emission_per_capita = mapped_column(Float)
+    __table_args__ = (
+        PrimaryKeyConstraint("country", "year"),
+    )
