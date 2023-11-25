@@ -13,7 +13,8 @@ export default function Visualization() {
         <DropdownButton />
       </div>
 
-      
+
+      </div>
     </div>
   );
 }

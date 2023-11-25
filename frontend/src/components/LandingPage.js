@@ -25,7 +25,6 @@ const LandingPage = ({ childs }) => {
   //     isActive: false,
   //   },
   // ];
-
   return (
     <div>
       {/* <div className="fixed px-40 top-0 bg-slate-800 opacity-90 z-10 w-full">
