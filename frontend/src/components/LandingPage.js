@@ -1,6 +1,6 @@
 import React from "react";
 import Tabs from "./Tabs";
-import backgroundImage from "../assets/images/background2.jpg";
+import backgroundImage from "../assets/images/background.png";
 import Users from "./UserPage";
 import NavBar from "./NavBar";
 // import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -25,9 +25,8 @@ const LandingPage = ({ childs }) => {
   //     isActive: false,
   //   },
   // ];
-  
+
   return (
-    
     <div>
       {/* <div className="fixed px-40 top-0 bg-slate-800 opacity-90 z-10 w-full">
         <Tabs tabs={tabs} />
@@ -38,13 +37,13 @@ const LandingPage = ({ childs }) => {
         className="bg-center bg-cover bg-no-repeat h-screen relative"
         id="home"
       >
-        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="absolute inset-0 bg-black opacity-0"></div>
         {/* {childs} */}
         <div className="pt-64 pl-40 w-3/5 text- relative h-[100vh]">
-          <h1 className="text-8xl text-slate-300 font-semibold pb-20">
+          <h1 className="text-8xl text-black font-semibold pb-20">
             Pandemic Insights
           </h1>
-          <p className="w-[75%] pl-3 text-xl text-slate-300">
+          <p className="w-[75%] pl-3 text-xl text-black font-bold">
             chutiya marcus marcus chutiya chuthiya marcus marcus chutiya.
             chutiya marcus marcus chutiya chuthiya marcus marcus chutiya.
             chutiya marcus marcus chutiya chuthiya marcus marcus chutiya.

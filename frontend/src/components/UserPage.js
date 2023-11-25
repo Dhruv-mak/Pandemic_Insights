@@ -6,7 +6,7 @@ const Users = ({ users }) => {
   return (
     <div
       id="users"
-      className="bg-[#c8becc] bg-gradient-to-br from-[#cac7e9] via-[#b7b7e0] to-[#cbacec]"
+      className="bg-[#c8becc] bg-gradient-to-br from-[#a26e25] via-[#ffffff] to-[#0c555c]"
     >
       <div className="flex flex-row flex-wrap gap-10 px-36 justify-center">
         <Link to="/Doctors"><Card title="Doctors" img_src={doctorImage}></Card></Link>
