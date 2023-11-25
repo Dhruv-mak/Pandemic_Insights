@@ -13,9 +13,7 @@ export default function Visualization() {
         <DropdownButton />
       </div>
 
-      <div className="flex justify-center mt-60 text-6xl text-gray-900 dark:text-red">
-        Schneider Shock!!! Sakshi Rock!!!
-      </div>
+      
     </div>
   );
 }
