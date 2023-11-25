@@ -17,9 +17,9 @@ export default function Visualization() {
         <Navbar2 />
       </div>
 
-      <div className="flex justify-center mt-60">
+      {/* <div className="flex justify-center mt-60">
         <DropdownButton />
-      </div>
+      </div> */}
     </div>
   );
 }
