@@ -16,9 +16,9 @@ export default function NavBar() {
       isActive: false,
     },
     {
-      id: "tabs-contact3",
-      href: "#tabs-contact3",
-      label: "Contact",
+      id: "count",
+      href: "#count",
+      label: "Count",
       isActive: false,
     },
   ];

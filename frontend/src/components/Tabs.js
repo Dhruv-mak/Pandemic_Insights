@@ -1,11 +1,18 @@
 import React from "react";
 import logo from "../assets/images/logo.png";
+import { get_count } from "../services/api";
+
 const Tabs = ({ tabs }) => {
   const smoothScrollTo = (id) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleCountClick = async () => {
+    const total = await get_count();
+    alert(`Total tuple count is ${total}`);
   };
   return (
     <div className="">
@@ -27,7 +34,11 @@ const Tabs = ({ tabs }) => {
                 role="tab"
                 onClick={(e) => {
                   e.preventDefault();
-                  smoothScrollTo(tab.href.slice(1));
+                  if (tab.id === "count") {
+                    handleCountClick();
+                  } else {
+                    smoothScrollTo(tab.href.slice(1));
+                  }
                 }}
               >
                 {tab.label}
