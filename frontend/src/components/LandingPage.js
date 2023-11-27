@@ -1,5 +1,4 @@
 import React from "react";
-import Tabs from "./Tabs";
 import backgroundImage from "../assets/images/background.png";
 import Users from "./UserPage";
 import NavBar from "./NavBar";
