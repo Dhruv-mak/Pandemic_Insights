@@ -27,10 +27,10 @@ function App() {
         <Route exact path="/" element={<LandingPage/>} />
        
        
-        <Route exact path="/Doctors" element={<Visualization />}/>
-        <Route exact path="/Epidemiologists" element={<Visualization />}/>
-        <Route exact path="/Policy Makers" element={<Visualization />}/>
-        <Route exact path="/General Public" element={<Visualization />}/>
+        <Route exact path="/Doctors" element={<Visualization userType="Doctors"/>}/>
+        <Route exact path="/Epidemiologists" element={<Visualization userType="Epidemiologists"/>}/>
+        <Route exact path="/Policy Makers" element={<Visualization userType="Policy Makers"/>}/>
+        <Route exact path="/General Public" element={<Visualization userType="General Public"/>}/>
           
 
       </Routes>
