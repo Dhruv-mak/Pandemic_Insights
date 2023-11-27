@@ -5,31 +5,8 @@ import Users from "./UserPage";
 import NavBar from "./NavBar";
 // import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 const LandingPage = ({ childs }) => {
-  // const tabs = [
-  //   {
-  //     id: "tabs-profile3",
-  //     href: "#home",
-  //     label: "Home",
-  //     isActive: true,
-  //   },
-  //   {
-  //     id: "tabs-profile3",
-  //     href: "#users",
-  //     label: "Users",
-  //     isActive: false,
-  //   },
-  //   {
-  //     id: "tabs-contact3",
-  //     href: "#tabs-contact3",
-  //     label: "Contact",
-  //     isActive: false,
-  //   },
-  // ];
   return (
     <div>
-      {/* <div className="fixed px-40 top-0 bg-slate-800 opacity-90 z-10 w-full">
-        <Tabs tabs={tabs} />
-      </div> */}
       <NavBar />
       <div
         style={{ backgroundImage: `url(${backgroundImage})` }}
