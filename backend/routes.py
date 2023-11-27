@@ -45,12 +45,17 @@ def get_countries(query_index):
         return jsonify(result)
 
 
-@api.route("/get_query/<int:query_index>/<string:country>")
-def get_query(query_index, country):
+@api.route("/get_query/<int:query_index>/<string:country_list>")
+def get_query(query_index, country_list):
     if query_index == 1:
+        country_list = country_list.split(",")
         with open("queries/query1.sql", "r") as f:
             query = f.read()
-        result = db_obj.execute_raw(query, country=country)
+
+        bind_vars = {f'country{i}': country for i, country in enumerate(country_list)}
+        in_clause = ', '.join(f':country{i}' for i in range(len(country_list)))
+        query = query.replace(':country_list', in_clause)
+        result = db_obj.execute_raw(query, **bind_vars)
         column_names = [column[0] for column in result.cursor.description]
         result_dict = [dict(zip(column_names, row)) for row in result]
         for r in result_dict:
