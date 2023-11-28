@@ -24,7 +24,7 @@ export default function NavBar() {
   ];
 
   return (
-    <div className="fixed px-40 top-0 bg-slate-800 opacity-90 z-10 w-full">
+    <div className="fixed px-40 top-0 bg-slate-800 opacity-95 z-10 w-full">
       <Tabs tabs={tabs} />
     </div>
   );
