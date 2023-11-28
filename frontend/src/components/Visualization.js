@@ -1,24 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar2 from "./Navbar2";
-import QueryNavBar from "./QueryNavBar";
+import QueryTabs from "./QueryTabs";
+import Query1 from "./queries/Query1";
 
+export default function Visualization({ userType }) {
+  const tabs = [
+    { id: "query1", href: "#query1", label: "Query1" },
+    { id: "query2", href: "#query2", label: "Query2" },
+    { id: "query3", href: "#query3", label: "Query3" },
+    { id: "query4", href: "#query4", label: "Query4" },
+    { id: "query5", href: "#query5", label: "Query5" },
+  ];
 
-export default function Visualization() {
+  const queryMap = {
+    "Doctors": [0, 1, 2],
+    "Epidemiologists": [0, 1, 2, 3],
+    "Policy Makers": [0, 1, 2, 3, 4],
+    "General Public": [0, 4],
+  };
+
+  const UserTabs = getUserTabs(queryMap[userType], tabs);
+
+  const [selectedTab, setSelectedTab] = useState(UserTabs[0].id);
+
+  const handleClick = (tab) => {
+    setSelectedTab(tab.id);
+  };
+
   return (
     <div className="Visual">
-
-      <div className="mb-8">
-        <QueryNavBar />
-      </div>
-      
-
       <div>
         <Navbar2 />
       </div>
-
-      {/* <div className="flex justify-center mt-60">
-        <DropdownButton />
-      </div> */}
+      <div className="fixed px-40 top-0 bg-slate-800 opacity-90 z-10 w-full mt-[4.25rem]">
+        <QueryTabs tabs={UserTabs} handleClick={handleClick} selectedTab={selectedTab} />
+      </div>
+      <div className="pt-36">
+        {selectedTab === "query1" && <Query1 />}
+        {selectedTab === "query2" && <div>Query2</div>}
+        {selectedTab === "query3" && <div>Query3</div>}
+        {selectedTab === "query4" && <div>Query4</div>}
+        {selectedTab === "query5" && <div>Query5</div>}
+        
+      </div>
     </div>
   );
 }
+
+const getUserTabs = (userMap, tabs) => {
+  return userMap.map((index) => tabs[index]);
+};

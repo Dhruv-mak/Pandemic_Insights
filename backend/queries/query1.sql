@@ -97,4 +97,4 @@ SELECT
 FROM
     EconomicHealthAnalysis
 WHERE
-    location=:country
+    location in (:country_list)
