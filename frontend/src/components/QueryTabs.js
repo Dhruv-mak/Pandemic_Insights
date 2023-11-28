@@ -20,7 +20,7 @@ const Tabs = ({ tabs }) => {
             <Link
               to={"/"}
               className={
-                "block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-md font-medium uppercase leading-tight text-neutral-300 hover:border-slate-500 hover:bg-purple-400"
+                "block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-md font-medium uppercase leading-tight text-neutral-300 hover:border-slate-500 hover:bg-brown-500"
               }
               id={tab.id}
               role="tab"

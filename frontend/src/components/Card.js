@@ -13,10 +13,10 @@ const Card = ({ img_src, title}) => {
         <h2 className="text-white text-3xl font-bold">{title}</h2>
         <button
           type="button"
-          className="my-7 inline-block rounded border-2 border-primary-100 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:border-purple-400 hover:bg-neutral-500 hover:bg-opacity-20 focus:border-primary-accent-100 focus:outline-none focus:ring-0 active:border-primary-accent-200"
+          className="my-7 inline-block rounded border-2 border-primary-100 px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:border-brown-500 hover:bg-neutral-500 hover:bg-opacity-20 focus:border-primary-accent-100 focus:outline-none focus:ring-0 active:border-primary-accent-200 font-bold"
           data-te-ripple-init 
         >
-          Get Queries
+          <b>Get Queries</b>
         </button>
       </div>
     </div>
