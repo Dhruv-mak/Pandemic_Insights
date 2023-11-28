@@ -9,9 +9,9 @@ const Users = ({ users }) => {
   return (
     <div
       id="users"
-      className="bg-[#c8becc] bg-gradient-to-br from-[#a26e25] via-[#ffffff] to-[#0c555c] pb-12"
+      className="bg-[#c8becc] bg-gradient-to-br from-[#a26e25] via-[#ffffff] to-[#0c555c] pb-12 h-screen flex justify-center items-center"
     >
-      <div className="flex flex-row flex-wrap gap-10 px-50 justify-center pb-16">
+      <div className="flex flex-row flex-wrap gap-10 justify-center">
         <Link to="/Doctors"><Card title="Doctors" img_src={doctorImage}></Card></Link>
         <Link to="/Epidemiologists"><Card title="Epidemiologists" img_src={epidemiologistImage}></Card></Link>
         <Link to="/Policy Makers"><Card title="Policy Makers" img_src={policyMakerImage}></Card></Link>

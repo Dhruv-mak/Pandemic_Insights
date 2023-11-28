@@ -41,7 +41,7 @@ const Query1 = () => {
     });
     return (
         <div className="Visual">
-        <div className="">
+        <div className="ml-10 mt-10">
             <DropdownCheckbox
             buttonText="Select a Country"
             checkboxItems={checkboxItems}

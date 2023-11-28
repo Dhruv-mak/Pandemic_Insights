@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/logo.jpg";
 import { get_count } from "../services/api";
 const Tabs = ({ tabs }) => {
   const smoothScrollTo = (id) => {

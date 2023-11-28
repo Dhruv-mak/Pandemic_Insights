@@ -42,7 +42,7 @@ export default function Navbar2() {
   ];
 
   return (
-    <div className="fixed px-40 top-0 bg-slate-800 opacity-90 z-10 w-full">
+    <div className="fixed px-40 top-0 bg-slate-800 opacity-95 z-10 w-full">
       <Tabs2 tabs={tabs} />
     </div>
   );
