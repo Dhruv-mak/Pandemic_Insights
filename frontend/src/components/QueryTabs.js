@@ -14,7 +14,7 @@ const Tabs = ({ tabs, handleClick, selectedTab }) => {
                 key={index} 
                 role="tab" 
                 onClick={() => handleClick(tab)} 
-                className={`block border-x-0 border-b-2 border-t-0 px-7 pb-3.5 pt-4 text-md font-medium uppercase leading-tight text-neutral-300 hover:border-slate-500 hover:bg-purple-400 cursor-pointer ${selectedTab === tab.id ? 'border-purple-500' : 'border-transparent'}`}
+                className={`block border-x-0 border-b-2 border-t-0 px-7 pb-3.5 pt-4 text-md font-medium uppercase leading-tight text-neutral-300 hover:border-slate-500 hover:bg-brown-500 cursor-pointer ${selectedTab === tab.id ? 'border-brown-500' : 'border-transparent'}`}
               >
                 {tab.label}
               </li>
