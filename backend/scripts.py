@@ -43,11 +43,23 @@ def populate_table_generic(table_name, file_name, record_creator):
 
 
 @cli_bp.cli.command("populate-table")
-@click.option('--table_name', default='all')
+@click.option("--table_name", default="all")
 def cli_populate_table(table_name):
     """Populate table with data from csv file"""
     if table_name == "all":
-        for table in ["Cases", "Mortality", "Population", "Vaccination", "StringencyIndex", "Hospitalization", "Testing", "Parameters", "Emissions"]:
+        for table in [
+            "Cases",
+            "Mortality",
+            "Population",
+            "Vaccination",
+            "StringencyIndex",
+            "Hospitalization",
+            "Testing",
+            "Parameters",
+            "Emissions",
+            "HDI",
+            "Inequality",
+        ]:
             populate_table(table)
     else:
         populate_table(table_name)
@@ -145,7 +157,7 @@ def populate_table(table_name):
             table_name,
             "final_emission.csv",
             lambda row: Emissions(
-                country=row[0], 
+                country=row[0],
                 year=row[1],
                 total_emissions=row[2],
                 co2_emission_coal=row[3],
@@ -161,12 +173,12 @@ def populate_table(table_name):
             table_name,
             "final_hdi.csv",
             lambda row: HDI(
-                year = row[0],
-                country = row[1],
-                le = float(row[2]) if row[2] != '' else None,
-                eys = float(row[3]) if row[3] != '' else None,
-                mys = float(row[4]) if row[4] != '' else None,
-                gnipc = float(row[5]) if row[5] != '' else None
+                year=row[0],
+                country=row[1],
+                le=float(row[2]) if row[2] != "" else None,
+                eys=float(row[3]) if row[3] != "" else None,
+                mys=float(row[4]) if row[4] != "" else None,
+                gnipc=float(row[5]) if row[5] != "" else None,
             ),
         )
     elif table_name == "Inequality":
@@ -174,28 +186,28 @@ def populate_table(table_name):
             table_name,
             "final_inequality.csv",
             lambda row: Inequality(
-                year = row[0],
-                country = row[1],
-                abr = float(row[2]) if row[2] != '' else None,
-                mmr = float(row[3]) if row[3] != '' else None,
-                prf = float(row[4]) if row[4] != '' else None,
-                sef = float(row[5]) if row[5] != '' else None,
-                prm = float(row[6]) if row[6] != '' else None,
-                sem = float(row[7]) if row[7] != '' else None,
-                lfprf = float(row[8]) if row[8] != '' else None,
-                lfprm = float(row[9]) if row[9] != '' else None
-            )
+                year=row[0],
+                country=row[1],
+                abr=float(row[2]) if row[2] != "" else None,
+                mmr=float(row[3]) if row[3] != "" else None,
+                prf=float(row[4]) if row[4] != "" else None,
+                sef=float(row[5]) if row[5] != "" else None,
+                prm=float(row[6]) if row[6] != "" else None,
+                sem=float(row[7]) if row[7] != "" else None,
+                lfprf=float(row[8]) if row[8] != "" else None,
+                lfprm=float(row[9]) if row[9] != "" else None,
+            ),
         )
     else:
         click.echo(f"Table {table_name} does not exist")
 
 
-@cli_bp.cli.command("grant-access") 
-@click.option('--table_name', default='all')
-@click.option('--user_name', default='all')
+@cli_bp.cli.command("grant-access")
+@click.option("--table_name", default="all")
+@click.option("--user_name", default="all")
 def grant_access(table_name, user_name):
     if table_name == "all":
-        table_list =  [
+        table_list = [
             "Cases",
             "Mortality",
             "Population",
@@ -205,6 +217,8 @@ def grant_access(table_name, user_name):
             "Testing",
             "Parameters",
             "Emissions",
+            "HDI",
+            "Inequality",
         ]
     else:
         table_list = [table_name]
