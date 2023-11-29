@@ -2,7 +2,7 @@ import React from "react";
 import DropdownCheckbox from "../DropdownCheckbox";
 import { get_coutry_list } from "../../services/api";
 import { get_query } from "../../services/api";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect} from "react";
 import Plot from "react-plotly.js";
 
 const Query1 = () => {
@@ -16,14 +16,13 @@ const Query1 = () => {
     }
     getCountryList();
   }, []);
-  const isFirstRender = useRef(true);
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
     async function getQueryGraph() {
+      if (checkedValues.length === 0) {
+        return;
+      }
       const queryGraphFetched = await get_query(1, checkedValues);
+      console.log(Array.isArray(queryGraphFetched))
       setQueryGraph(queryGraphFetched);
     }
     getQueryGraph();
@@ -54,7 +53,11 @@ const Query1 = () => {
           handleCheck={handleCheck}
         />
       </div>
-      <Plot data={queryGraph.data} layout={queryGraph.layout}></Plot>
+      <div>
+        {queryGraph.map((graph, index) => (
+          <Plot key={index} data={graph.data} layout={graph.layout}></Plot>
+        ))}
+      </div>
     </div>
   );
 };
