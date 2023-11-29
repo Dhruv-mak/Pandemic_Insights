@@ -64,9 +64,7 @@ def get_query(query_index, country_list):
             showlegend=True,
             plot_bgcolor='white'
         )
-        fig.show()
-        graph_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graph_json
+        return json.dumps([fig], cls=plotly.utils.PlotlyJSONEncoder)
     
 @api.route("/get_count")
 def get_count():
