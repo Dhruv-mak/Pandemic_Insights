@@ -71,6 +71,12 @@ class DbUtils:
             elif table_name == 'Emissions':
                 from models import Emissions
                 self.create_all(Emissions.__table__)
+            elif table_name == "HDI":
+                from models import HDI
+                self.create_all(HDI.__table__)
+            elif table_name == "Inequality":
+                from models import Inequality
+                self.create_all(Inequality.__table__)
         else:
             print(f"Table {table_name} already exists")
     

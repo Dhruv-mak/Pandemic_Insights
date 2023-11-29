@@ -14,6 +14,8 @@ from models import (
     Testing,
     Parameters,
     Emissions,
+    HDI,
+    Inequality,
 )
 import csv
 import datetime
@@ -154,11 +156,41 @@ def populate_table(table_name):
                 co2_emission_per_capita=row[8],
             ),
         )
+    elif table_name == "HDI":
+        populate_table_generic(
+            table_name,
+            "final_hdi.csv",
+            lambda row: HDI(
+                year = row[0],
+                country = row[1],
+                le = float(row[2]) if row[2] != '' else None,
+                eys = float(row[3]) if row[3] != '' else None,
+                mys = float(row[4]) if row[4] != '' else None,
+                gnipc = float(row[5]) if row[5] != '' else None
+            ),
+        )
+    elif table_name == "Inequality":
+        populate_table_generic(
+            table_name,
+            "final_inequality.csv",
+            lambda row: Inequality(
+                year = row[0],
+                country = row[1],
+                abr = float(row[2]) if row[2] != '' else None,
+                mmr = float(row[3]) if row[3] != '' else None,
+                prf = float(row[4]) if row[4] != '' else None,
+                sef = float(row[5]) if row[5] != '' else None,
+                prm = float(row[6]) if row[6] != '' else None,
+                sem = float(row[7]) if row[7] != '' else None,
+                lfprf = float(row[8]) if row[8] != '' else None,
+                lfprm = float(row[9]) if row[9] != '' else None
+            )
+        )
     else:
         click.echo(f"Table {table_name} does not exist")
 
 
-@cli_bp.cli.command("grant-access")
+@cli_bp.cli.command("grant-access") 
 @click.option('--table_name', default='all')
 @click.option('--user_name', default='all')
 def grant_access(table_name, user_name):

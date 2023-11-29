@@ -123,3 +123,31 @@ class Emissions(BASE):
     __table_args__ = (
         PrimaryKeyConstraint("country", "year"),
     )
+    
+class HDI(BASE):
+    __tablename__ = "HDI"
+    year = mapped_column(Integer)
+    country = mapped_column(String(50))
+    le = mapped_column(Float)
+    eys = mapped_column(Float)
+    mys = mapped_column(Float)
+    gnipc = mapped_column(Float)
+    __table_args__ = (
+        PrimaryKeyConstraint("country", "year"),
+    )
+
+class Inequality(BASE):
+    __tablename__ = "Inequality"
+    year = mapped_column(Integer)
+    country = mapped_column(String(50))
+    abr = mapped_column(Float)
+    mmr = mapped_column(Float)
+    prf = mapped_column(Float)
+    sef = mapped_column(Float)
+    prm = mapped_column(Float)
+    sem = mapped_column(Float)
+    lfprf = mapped_column(Float)
+    lfprm = mapped_column(Float)
+    __table_args__ = (
+        PrimaryKeyConstraint("country", "year"),
+    )
