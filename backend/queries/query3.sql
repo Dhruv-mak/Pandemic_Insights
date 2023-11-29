@@ -1,0 +1,75 @@
+--gender inequality index UNDP
+-- Step 1: Treat zeros and extreme values
+-- Set minimum values for MMR and ABR to avoid zeros in geometric mean calculations
+
+-- Step 2: Aggregate across dimensions within each gender group using geometric means
+WITH FemaleIndicators AS (
+    SELECT
+        country, year,
+        -- Add a small number to MMR and ABR to ensure they are not zero
+        POWER(((10 / GREATEST(MMR, 0.1)) * (1 / GREATEST(ABR, 0.1))), 1/2) AS Health,
+        POWER((prf * sef), 1/2) AS Empowerment,
+        lfprf
+    FROM global_inequality
+    WHERE MMR BETWEEN 10 AND 1000 AND ABR > 0.1 -- Ensure ABR is greater than 0.1
+),
+MaleIndicators AS (
+    SELECT
+        country,year,
+        POWER((prm * sem), 1/2) AS Empowerment,
+        LFPRM
+    FROM global_inequality
+),
+FemaleGII AS (
+    SELECT
+        country, year,
+        POWER(Health * Empowerment * GREATEST(lfprf, 0.1), 1/3) AS G_F -- Use GREATEST to avoid zero
+    FROM FemaleIndicators
+),
+MaleGII AS (
+    SELECT
+        country, year,
+        POWER(Empowerment * GREATEST(LFPRM, 0.1), 1/3) AS G_M -- Use GREATEST to avoid zero
+    FROM MaleIndicators
+),
+HarmonicMeans AS (
+    SELECT
+        F.country, F.year,
+        -- Check for zero values and handle division by zero
+        CASE
+            WHEN G_F = 0 OR G_M = 0 THEN NULL -- Avoid division by zero
+            ELSE (((1 / G_F) + (1 / G_M))/2) 
+        END AS Harmonic_Mean
+    FROM FemaleGII F
+    JOIN MaleGII M ON F.country = M.country AND F.year = M.year
+),
+
+Final as(
+select country, year ,((POWER(((10/mmr) * (1/abr)), 1/2)) + 1) AS HealthX,
+ ((POWER((prf * sef), 1/2) + POWER((prf * sef), 1/2))/2) AS empX,
+ ((lfprf + lfprm)/2) AS lfprX
+from global_inequality ),
+
+final1 as ( select country, year, POWER((healthX * empX * lfprX), 1/3) as GFM from final),
+
+final2 as
+( SELECT
+    final1.country, final1.year,
+    -- Check for NULL Harmonic_Mean which indicates division by zero was avoided
+    CASE
+        WHEN Harmonic_Mean IS NULL THEN NULL
+        ELSE ROUND(1 - (Harmonic_Mean/ GFM), 5)
+    END AS GII
+FROM HarmonicMeans join final1 on final1.country= HarmonicMeans.country and final1.year = HarmonicMeans.year
+)
+
+select * from final2
+order by country, year
+
+
+
+
+
+
+
+
