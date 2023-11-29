@@ -19,6 +19,8 @@ from models import (
     Testing,
     Parameters,
     Emissions,
+    HDI,
+    Inequality,
 )
 from graph_utility import (
     get_line_graph_query1,
@@ -81,5 +83,7 @@ def get_count():
     result += session.query(Testing).count()
     result += session.query(Parameters).count()
     result += session.query(Emissions).count()
+    result += session.query(HDI).count()
+    result += session.query(Inequality).count()
     session.close()
     return jsonify(result)
