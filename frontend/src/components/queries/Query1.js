@@ -22,7 +22,6 @@ const Query1 = () => {
         return;
       }
       const queryGraphFetched = await get_query(1, checkedValues);
-      console.log(Array.isArray(queryGraphFetched))
       setQueryGraph(queryGraphFetched);
     }
     getQueryGraph();

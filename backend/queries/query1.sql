@@ -29,6 +29,7 @@ final as(
     SELECT
         t."date",
         t."COUNTRY",
+        ROUND(new_cases_smoothed,5) AS new_cases_smoothed,
         CASE
             WHEN t."NEW_TESTS_SMOOTHED" = 0 THEN NULL -- Avoid division by zero
             ELSE ROUND(
