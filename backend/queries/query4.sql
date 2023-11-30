@@ -1,4 +1,3 @@
---HDI UNDP
 WITH HDI_Components AS (
     SELECT
         country,
@@ -17,7 +16,7 @@ WITH HDI_Components AS (
             ELSE 0 -- Or handle this case as appropriate for your data
         END AS income_index
     FROM 
-        hdi
+        "DMAKWANA"."HDI"
 ),
 HDI_Calculations AS (
     SELECT
