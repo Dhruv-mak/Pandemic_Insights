@@ -5,6 +5,7 @@ import Query1 from "./queries/Query1";
 import Query2 from "./queries/Query2";
 import Query3 from "./queries/Query3";
 import Query4 from "./queries/Query4";
+import Query5 from "./queries/Query5";
 
 export default function Visualization({ userType }) {
   const tabs = [
@@ -59,7 +60,7 @@ export default function Visualization({ userType }) {
             <Query4 />
           </div>
         )}
-        {selectedTab === "query5" && <div>Query5</div>}
+        {selectedTab === "query5" && <div><Query5/></div>}
       </div>
     </div>
   );
