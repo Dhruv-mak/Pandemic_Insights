@@ -455,3 +455,37 @@ def get_line_graph(data, metric):
     )
 
     return fig
+
+from plotly.subplots import make_subplots
+
+def plot_dual_axis_line_graph(data):
+    # Create a figure with secondary y-axis using make_subplots
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    # Iterate through each country to plot its data
+    for country in data['country'].unique():
+        country_data = data[data['country'] == country]
+
+        # Add lagged excess mortality line
+        fig.add_trace(
+            go.Scatter(x=country_data['date'], y=country_data['lagged_excess_mortality'], 
+                       name=f'{country} - Lagged Excess Mortality',
+                       mode='lines'),
+            secondary_y=False
+        )
+
+        # Add lagged vaccination rate line
+        fig.add_trace(
+            go.Scatter(x=country_data['date'], y=country_data['lagged_vaccination_rate'], 
+                       name=f'{country} - Lagged Vaccination Rate',
+                       mode='lines'),
+            secondary_y=True
+        )
+
+    # Add figure title and axis titles
+    fig.update_layout(title_text='Lagged Excess Mortality and Vaccination Rate Over Time by Country')
+    fig.update_xaxes(title_text='Date')
+    fig.update_yaxes(title_text='Lagged Excess Mortality', secondary_y=False)
+    fig.update_yaxes(title_text='Lagged Vaccination Rate', secondary_y=True)
+
+    return fig
