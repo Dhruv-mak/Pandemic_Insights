@@ -161,3 +161,24 @@ def get_animated_heatmap(data):
 
     return fig
 
+def get_global_vs_country_trend_line_graph(data, emission_type):
+    # Ensure 'year' column is in datetime format for better x-axis formatting
+    if data['year'].dtype != '<M8[ns]':  # Check if not already datetime
+        data['year'] = pd.to_datetime(data['year'].astype(str))
+    # Create the line graph
+    fig = px.line(data, x='year', y=emission_type, color='country',
+                  title=f'{emission_type} Over Time by Country vs Global')
+
+    # Update layout for better readability
+    fig.update_layout(
+        xaxis_title='Year',
+        yaxis_title=emission_type.replace('_', ' ').title(),
+        xaxis=dict(showline=True, showgrid=False, showticklabels=True, linecolor='rgb(204, 204, 204)', linewidth=2, ticks='outside', tickfont=dict(family='Arial', size=12, color='rgb(82, 82, 82)')),
+        yaxis=dict(showgrid=False, zeroline=False, showline=False, showticklabels=True),
+        autosize=True,
+        margin=dict(autoexpand=True),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+
+    return fig

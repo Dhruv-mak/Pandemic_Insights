@@ -137,6 +137,6 @@ SELECT
     (g.avg_flaring_ratio - g.prev_YEAR_avg_flaring) / NULLIF(g.prev_YEAR_avg_flaring, 0) * 100 AS flaring_ratio_change
 FROM 
     GlobalAndCountryData g
+    WHERE g.country IN (:country_list)
 ORDER BY 
     g.country,g."YEAR"
-

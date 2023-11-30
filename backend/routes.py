@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from db import db_obj
 from datetime import datetime
 from plotly import graph_objs as go
@@ -28,6 +28,7 @@ from graph_utility import (
     get_percentile_graph_query1,
     new_cases_smoothed_query1,
     get_positivity_rate_color_coded_scatter,
+    get_global_vs_country_trend_line_graph
 )
 
 
@@ -44,10 +45,13 @@ def get_countries(query_index):
         table2 = session.query(Testing.country)
         table3 = session.query(Parameters.country)
         intersection = table1.intersect(table2).intersect(table3)
-        result = intersection.all()
-        result = [r[0] for r in result]
-        session.close()
-        return jsonify(result)
+    elif query_index == 2:
+        table1 = session.query(Emissions.country.distinct())
+        intersection = table1
+    result = intersection.all()
+    result = [r[0] for r in result]
+    session.close()
+    return jsonify(result)
 
 
 @api.route("/get_query/<int:query_index>/<string:country_list>")
@@ -68,6 +72,20 @@ def get_query(query_index, country_list):
         graphs.append(new_cases_smoothed_query1(data))
         graphs.append(get_positivity_rate_color_coded_scatter(data))
         
+        return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    elif query_index == 2:
+        emmission_type = request.args.get("emission_type")
+        country_list += ",Global"
+        country_list = country_list.split(",")
+        country_list = ",".join([f"'{country}'" for country in country_list])
+        with open("queries/query2.sql", "r") as f:
+            query = f.read()
+        query = query.replace(":country_list", country_list)
+        data = pd.read_sql(query, db_obj.engine)
+        data["date"] = pd.to_datetime(data["year"])
+        
+        graphs = []
+        graphs.append(get_global_vs_country_trend_line_graph(data, emmission_type))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
 
 
