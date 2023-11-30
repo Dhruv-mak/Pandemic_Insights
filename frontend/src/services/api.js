@@ -1,8 +1,9 @@
-export async function get_query(index, countryList) {
+export async function get_query(index, countryList, params = {}) {
   try {
-    const response = await fetch(
-      "http://localhost:5000/api/get_query/" + index + "/" + countryList
-    );
+    const url = new URL("http://localhost:5000/api/get_query/" + index + "/" + countryList);
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
