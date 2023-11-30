@@ -32,6 +32,7 @@ from graph_utility import (
     get_line_graph_new_deaths_smoothed,
     get_interaction_graph,
     get_metric_rank_graph,
+    get_hdi_line_graph,
 )
 
 
@@ -55,6 +56,8 @@ def get_countries(query_index):
         table1 = session.query(Cases.location)
         table2 = session.query(Parameters.country)
         intersection = table1.intersect(table2)
+    elif query_index == 4:
+        intersection = session.query(HDI.country.distinct()).order_by(HDI.country)
     result = intersection.all()
     result = [r[0] for r in result]
     session.close()
@@ -112,6 +115,16 @@ def get_query(query_index, country_list):
                 graphs.append(get_metric_rank_graph(data, "hostpital_beds"))
             else:
                 graphs.append(get_metric_rank_graph(data, interaction_type.split("_")[0]))
+        return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    elif query_index == 4:
+        country_list = country_list.split(",")
+        country_list = ",".join([f"'{country}'" for country in country_list])
+        with open("queries/query4.sql", "r") as f:
+            query = f.read()
+        query = query.replace(":country_list", country_list)
+        data = pd.read_sql(query, db_obj.engine)
+        graphs = []
+        graphs.append(get_hdi_line_graph(data))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
         
 

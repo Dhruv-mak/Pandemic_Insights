@@ -13,10 +13,11 @@ WITH HDI_Components AS (
         -- Calculate income index using logarithms as per the formula
         CASE 
             WHEN gnipc > 100 THEN (LN(gnipc) - LN(100)) / (LN(75000) - LN(100))
-            ELSE 0 -- Or handle this case as appropriate for your data
+            ELSE 0
         END AS income_index
     FROM 
         "DMAKWANA"."HDI"
+    WHERE country IN (:country_list)
 ),
 HDI_Calculations AS (
     SELECT
@@ -38,10 +39,10 @@ SELECT
     -- Check for negative values before using POWER
     CASE 
         WHEN life_index > 0 AND education_index > 0 AND income_index > 0 THEN 
-            TRUNC(POWER(life_index * education_index * income_index, 1/3), 6)
-        ELSE NULL -- Or handle this case as appropriate for your data
+            TRUNC(POWER(life_index * education_index * income_index, 1/3), 3)
+        ELSE NULL
     END AS hdi
 FROM 
-    HDI_Calculations;
+    HDI_Calculations
 
 

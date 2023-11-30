@@ -4,6 +4,7 @@ import QueryTabs from "./QueryTabs";
 import Query1 from "./queries/Query1";
 import Query2 from "./queries/Query2";
 import Query3 from "./queries/Query3";
+import Query4 from "./queries/Query4";
 
 export default function Visualization({ userType }) {
   const tabs = [
@@ -15,8 +16,8 @@ export default function Visualization({ userType }) {
   ];
 
   const queryMap = {
-    "Doctors": [0, 1, 2],
-    "Epidemiologists": [0, 1, 2, 3],
+    Doctors: [0, 1, 2],
+    Epidemiologists: [0, 1, 2, 3],
     "Policy Makers": [0, 1, 2, 3, 4],
     "General Public": [0, 4],
   };
@@ -35,15 +36,30 @@ export default function Visualization({ userType }) {
         <Navbar2 />
       </div>
       <div className="fixed px-40 top-0 bg-slate-800 opacity-90 z-10 w-full mt-[5.25rem]">
-        <QueryTabs tabs={UserTabs} handleClick={handleClick} selectedTab={selectedTab} />
+        <QueryTabs
+          tabs={UserTabs}
+          handleClick={handleClick}
+          selectedTab={selectedTab}
+        />
       </div>
       <div className="pt-36">
         {selectedTab === "query1" && <Query1 />}
-        {selectedTab === "query2" && <div><Query2 /></div>}
-        {selectedTab === "query3" && <div><Query3 /></div>}
-        {selectedTab === "query4" && <div>Query4</div>}
+        {selectedTab === "query2" && (
+          <div>
+            <Query2 />
+          </div>
+        )}
+        {selectedTab === "query3" && (
+          <div>
+            <Query3 />
+          </div>
+        )}
+        {selectedTab === "query4" && (
+          <div>
+            <Query4 />
+          </div>
+        )}
         {selectedTab === "query5" && <div>Query5</div>}
-        
       </div>
     </div>
   );

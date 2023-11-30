@@ -246,3 +246,27 @@ def get_metric_rank_graph(data, metric):
     )
     
     return fig
+
+
+def get_hdi_line_graph(data):
+    # Ensure the data is sorted correctly
+    data = data.sort_values(by=['country', 'year'])
+
+    # Optionally, you can fill in missing years for each country
+    # This is a complex operation and depends on how you want to handle missing data
+
+    fig = px.line(data, x='year', y='hdi', color='country', 
+                  title='Human Development Index (HDI) Over Time by Country')
+
+    fig.update_layout(
+        xaxis_title='Year',
+        yaxis_title='Human Development Index (HDI)',
+        xaxis=dict(showline=True, showgrid=True, showticklabels=True, linecolor='rgb(204, 204, 204)', linewidth=2, ticks='outside', tickfont=dict(family='Arial', size=12, color='rgb(82, 82, 82)')),
+        yaxis=dict(showgrid=True, zeroline=False, showline=False, showticklabels=True),
+        autosize=True,
+        margin=dict(autoexpand=True),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+    
+    return fig
