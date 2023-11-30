@@ -3,6 +3,7 @@ import Navbar2 from "./Navbar2";
 import QueryTabs from "./QueryTabs";
 import Query1 from "./queries/Query1";
 import Query2 from "./queries/Query2";
+import Query3 from "./queries/Query3";
 
 export default function Visualization({ userType }) {
   const tabs = [
@@ -39,7 +40,7 @@ export default function Visualization({ userType }) {
       <div className="pt-36">
         {selectedTab === "query1" && <Query1 />}
         {selectedTab === "query2" && <div><Query2 /></div>}
-        {selectedTab === "query3" && <div>Query3</div>}
+        {selectedTab === "query3" && <div><Query3 /></div>}
         {selectedTab === "query4" && <div>Query4</div>}
         {selectedTab === "query5" && <div>Query5</div>}
         

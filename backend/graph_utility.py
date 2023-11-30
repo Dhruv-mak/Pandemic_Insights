@@ -182,3 +182,67 @@ def get_global_vs_country_trend_line_graph(data, emission_type):
     )
 
     return fig
+
+def get_line_graph_new_deaths_smoothed(data):
+    fig = px.line(data, x='date', y='new_deaths_smoothed_per_million', color='location', 
+                  title='New Deaths Smoothed Per Million Over Time by Country')
+
+    fig.update_layout(
+        xaxis_title='Date',
+        yaxis_title='New Deaths Smoothed Per Million',
+        xaxis=dict(showline=True, showgrid=False, showticklabels=True, linecolor='rgb(204, 204, 204)', linewidth=2, ticks='outside', tickfont=dict(family='Arial', size=12, color='rgb(82, 82, 82)')),
+        yaxis=dict(showgrid=False, zeroline=False, showline=False, showticklabels=True),
+        autosize=True,
+        margin=dict(autoexpand=True),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+    
+    return fig
+
+def get_interaction_graph(data, interaction_metric):
+    if interaction_metric not in data.columns:
+        raise ValueError(f"Interaction metric '{interaction_metric}' not found in data")
+
+    fig = px.line(data, x='date', y=interaction_metric, color='location', 
+                  title=f'{interaction_metric.replace("_", " ").title()} Over Time by Country')
+
+    fig.update_layout(
+        xaxis_title='Date',
+        yaxis_title=interaction_metric.replace("_", " ").title(),
+        xaxis=dict(showline=True, showgrid=False, showticklabels=True, linecolor='rgb(204, 204, 204)', linewidth=2, ticks='outside', tickfont=dict(family='Arial', size=12, color='rgb(82, 82, 82)')),
+        yaxis=dict(showgrid=False, zeroline=False, showline=False, showticklabels=True),
+        autosize=True,
+        margin=dict(autoexpand=True),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+    
+    return fig
+
+def get_metric_rank_graph(data, metric):
+    # Assuming the data already contains a ranking column for the metric.
+    # For example, 'gdp_rank' for GDP-related rankings.
+    rank_column = f"{metric}_rank"
+
+    if rank_column not in data.columns:
+        raise ValueError(f"Rank column '{rank_column}' not found in data")
+
+    # Sort data based on date and rank
+    sorted_data = data.sort_values(by=['date', rank_column])
+
+    fig = px.bar(sorted_data, x='date', y=rank_column, color='location',
+                 title=f'Ranking of Countries by {metric.replace("_", " ").title()} Over Time')
+
+    fig.update_layout(
+        xaxis_title='Date',
+        yaxis_title=f'Rank for {metric.replace("_", " ").title()}',
+        xaxis=dict(showline=True, showgrid=True, showticklabels=True, linecolor='rgb(204, 204, 204)', linewidth=2, ticks='outside', tickfont=dict(family='Arial', size=12, color='rgb(82, 82, 82)')),
+        yaxis=dict(showgrid=True, zeroline=False, showline=False, showticklabels=True, autorange='reversed'),  # Reverse y-axis to show rank 1 at top
+        autosize=True,
+        margin=dict(autoexpand=True),
+        showlegend=True,
+        plot_bgcolor='white'
+    )
+    
+    return fig
