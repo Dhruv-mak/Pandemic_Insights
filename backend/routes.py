@@ -28,7 +28,10 @@ from graph_utility import (
     get_percentile_graph_query1,
     new_cases_smoothed_query1,
     get_positivity_rate_color_coded_scatter,
-    get_global_vs_country_trend_line_graph
+    get_global_vs_country_trend_line_graph,
+    get_line_graph_new_deaths_smoothed,
+    get_interaction_graph,
+    get_metric_rank_graph,
 )
 
 
@@ -46,8 +49,12 @@ def get_countries(query_index):
         table3 = session.query(Parameters.country)
         intersection = table1.intersect(table2).intersect(table3)
     elif query_index == 2:
-        table1 = session.query(Emissions.country.distinct())
+        table1 = session.query(Emissions.country.distinct()).order_by(Emissions.country)
         intersection = table1
+    elif query_index == 3:
+        table1 = session.query(Cases.location)
+        table2 = session.query(Parameters.country)
+        intersection = table1.intersect(table2)
     result = intersection.all()
     result = [r[0] for r in result]
     session.close()
@@ -87,6 +94,26 @@ def get_query(query_index, country_list):
         graphs = []
         graphs.append(get_global_vs_country_trend_line_graph(data, emmission_type))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    elif query_index == 3:
+        interaction_type = request.args.get("interaction_type")
+        country_list = country_list.split(",")
+        country_list = ",".join([f"'{country}'" for country in country_list])
+        with open("queries/query3.sql", "r") as f:
+            query = f.read()
+        query = query.replace(":country_list", country_list)
+        data = pd.read_sql(query, db_obj.engine)
+        data["date"] = pd.to_datetime(data["date"], format="%d-%b-%y")
+        
+        graphs = []
+        graphs.append(get_line_graph_new_deaths_smoothed(data))
+        if len(interaction_type) != 0:
+            graphs.append(get_interaction_graph(data, interaction_type))
+            if interaction_type == "hospital_beds_death_interaction":
+                graphs.append(get_metric_rank_graph(data, "hostpital_beds"))
+            else:
+                graphs.append(get_metric_rank_graph(data, interaction_type.split("_")[0]))
+        return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+        
 
 
 @api.route("/get_count")

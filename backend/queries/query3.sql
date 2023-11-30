@@ -1,75 +1,102 @@
---gender inequality index UNDP
--- Step 1: Treat zeros and extreme values
--- Set minimum values for MMR and ABR to avoid zeros in geometric mean calculations
-
--- Step 2: Aggregate across dimensions within each gender group using geometric means
-WITH FemaleIndicators AS (
+WITH cases_population AS (
     SELECT
-        country, year,
-        -- Add a small number to MMR and ABR to ensure they are not zero
-        POWER(((10 / GREATEST(MMR, 0.1)) * (1 / GREATEST(ABR, 0.1))), 1/2) AS Health,
-        POWER((prf * sef), 1/2) AS Empowerment,
-        lfprf
-    FROM global_inequality
-    WHERE MMR BETWEEN 10 AND 1000 AND ABR > 0.1 -- Ensure ABR is greater than 0.1
+        c."date",
+        c."LOCATION",
+        c."NEW_DEATHS",
+        "POPULATION"
+    FROM
+        "DMAKWANA"."Cases" c
+        JOIN "DMAKWANA"."Population" p ON p."COUNTRY" = c."LOCATION"
+        AND p."COUNTRY" IN (:country_list)
 ),
-MaleIndicators AS (
+SmoothedCases AS (
     SELECT
-        country,year,
-        POWER((prm * sem), 1/2) AS Empowerment,
-        LFPRM
-    FROM global_inequality
+        cp."LOCATION",
+        cp."date",
+        cp."NEW_DEATHS",
+        (
+            SUM(cp."NEW_DEATHS") OVER (
+                PARTITION BY cp."LOCATION"
+                ORDER BY
+                    cp."date" ROWS BETWEEN 6 PRECEDING
+                    AND CURRENT ROW
+            ) / 7
+        ) AS NEW_DEATHS_smoothed,
+        POPULATION
+    FROM
+        cases_population cp
 ),
-FemaleGII AS (
+CasesPerMillion AS (
     SELECT
-        country, year,
-        POWER(Health * Empowerment * GREATEST(lfprf, 0.1), 1/3) AS G_F -- Use GREATEST to avoid zero
-    FROM FemaleIndicators
+        LOCATION,
+        "date",
+        NEW_DEATHS_smoothed,
+        (NEW_DEATHS_smoothed / population) * 10000 AS NEW_DEATHS_smoothed_per_million
+    FROM
+        SmoothedCases
 ),
-MaleGII AS (
+final_to_use AS (
     SELECT
-        country, year,
-        POWER(Empowerment * GREATEST(LFPRM, 0.1), 1/3) AS G_M -- Use GREATEST to avoid zero
-    FROM MaleIndicators
+        location,
+        "date",
+        NEW_DEATHS_smoothed_per_million
+    FROM
+        CasesPerMillion
 ),
-HarmonicMeans AS (
+EconomicHealthAnalysis AS (
     SELECT
-        F.country, F.year,
-        -- Check for zero values and handle division by zero
-        CASE
-            WHEN G_F = 0 OR G_M = 0 THEN NULL -- Avoid division by zero
-            ELSE (((1 / G_F) + (1 / G_M))/2) 
-        END AS Harmonic_Mean
-    FROM FemaleGII F
-    JOIN MaleGII M ON F.country = M.country AND F.year = M.year
-),
-
-Final as(
-select country, year ,((POWER(((10/mmr) * (1/abr)), 1/2)) + 1) AS HealthX,
- ((POWER((prf * sef), 1/2) + POWER((prf * sef), 1/2))/2) AS empX,
- ((lfprf + lfprm)/2) AS lfprX
-from global_inequality ),
-
-final1 as ( select country, year, POWER((healthX * empX * lfprX), 1/3) as GFM from final),
-
-final2 as
-( SELECT
-    final1.country, final1.year,
-    -- Check for NULL Harmonic_Mean which indicates division by zero was avoided
-    CASE
-        WHEN Harmonic_Mean IS NULL THEN NULL
-        ELSE ROUND(1 - (Harmonic_Mean/ GFM), 5)
-    END AS GII
-FROM HarmonicMeans join final1 on final1.country= HarmonicMeans.country and final1.year = HarmonicMeans.year
+        c."date",
+        c.location,
+        c.new_deaths_smoothed_per_million,
+        d.gdp_per_capita,
+        d.cardiovasc_death_rate,
+        d.diabetes_prevalence,
+        (
+            d.gdp_per_capita * c.new_deaths_smoothed_per_million
+        ) AS gdp_death_interaction,
+        (
+            d.cardiovasc_death_rate * c.new_deaths_smoothed_per_million
+        ) AS cardiovasc_death_interaction,
+        (
+            d.diabetes_prevalence * c.new_deaths_smoothed_per_million
+        ) AS diabetes_death_interaction,
+        (
+            d.hospital_beds_per_thousand * c.new_deaths_smoothed_per_million
+        ) AS hospital_beds_death_interaction
+    FROM
+        final_to_use c
+        INNER JOIN "DMAKWANA"."Parameters" d ON c.location = d."COUNTRY"
 )
-
-select * from final2
-order by country, year
-
-
-
-
-
-
-
-
+SELECT
+    "date",
+    location,
+    new_deaths_smoothed_per_million,
+    gdp_death_interaction,
+    cardiovasc_death_interaction,
+    diabetes_death_interaction,
+    hospital_beds_death_interaction,
+    ROW_NUMBER() OVER (
+        PARTITION BY location
+        ORDER BY
+            gdp_death_interaction DESC
+    ) AS gdp_rank,
+    ROW_NUMBER() OVER (
+        PARTITION BY location
+        ORDER BY
+            cardiovasc_death_interaction DESC
+    ) AS cardiovasc_rank,
+    ROW_NUMBER() OVER (
+        PARTITION BY location
+        ORDER BY
+            diabetes_death_interaction DESC
+    ) AS diabetes_rank,
+    ROW_NUMBER() OVER (
+        PARTITION BY location
+        ORDER BY
+            hospital_beds_death_interaction DESC
+    ) AS hospital_beds_rank
+FROM
+    EconomicHealthAnalysis
+ORDER BY
+    location,
+    "date"
