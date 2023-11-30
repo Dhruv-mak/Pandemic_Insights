@@ -10,6 +10,7 @@ WITH VaccinationExcessMortality AS (
       "DMAKWANA"."Mortality" e
     INNER JOIN 
         "DMAKWANA"."Vaccination" v ON e."COUNTRY" = v."LOCATION" AND e."date" = v."date"
+        AND e."COUNTRY" IN (:country_list)
 ),
 FINAL1 AS(
 SELECT 
@@ -29,7 +30,8 @@ SELECT "date",
     PEOPLE_VACCINATED,
     lagged_excess_mortality,
     lagged_vaccination_rate, change_in_excess_mortality,
+    change_in_vaccination_rate,
     (change_in_excess_mortality * change_in_vaccination_rate) AS interaction_term
 FROM FINAL1
 WHERE 
-    lagged_excess_mortality IS NOT NULL AND lagged_vaccination_rate IS NOT NULL;
+    lagged_excess_mortality IS NOT NULL AND lagged_vaccination_rate IS NOT NULL

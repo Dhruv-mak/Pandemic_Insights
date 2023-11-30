@@ -44,17 +44,22 @@ const Query1 = () => {
     };
   });
   return (
-    <div className="Visual">
-      <div className="ml-10 mt-10">
+    <div className="Visual mx-28">
+      <div className="ml-36 mt-10">
         <DropdownCheckbox
           buttonText="Select a Country"
           checkboxItems={checkboxItems}
           handleCheck={handleCheck}
         />
       </div>
-      <div>
+      <div className="flex flex-col">
         {queryGraph.map((graph, index) => (
-          <Plot key={index} data={graph.data} layout={graph.layout}></Plot>
+          <div className="mx-auto" key={index}>
+            <Plot 
+              data={graph.data} 
+              layout={{...graph.layout, width: window.innerWidth * 0.65, height: window.innerHeight * 0.7}}
+            />
+          </div>
         ))}
       </div>
     </div>

@@ -33,6 +33,7 @@ from graph_utility import (
     get_interaction_graph,
     get_metric_rank_graph,
     get_line_graph,
+    plot_dual_axis_line_graph,
 )
 
 
@@ -60,6 +61,10 @@ def get_countries(query_index):
         intersection = session.query(HDI.country.distinct()).order_by(HDI.country)
     elif query_index == 5:
         intersection = session.query(Inequality.country.distinct()).order_by(Inequality.country)
+    elif query_index == 6:
+        table1 = session.query(Mortality.country)
+        table2 = session.query(Vaccination.location)
+        intersection = table1.intersect(table2)
     result = intersection.all()
     result = [r[0] for r in result]
     session.close()
@@ -79,10 +84,13 @@ def get_query(query_index, country_list):
 
         graphs = []
         graphs.append(get_line_graph_query1(data))
-        graphs.append(get_stacked_area_chart(data))
+        try:
+            graphs.append(get_stacked_area_chart(data))
+        except:
+            pass
         # graphs.append(get_percentile_graph_query1(data))
         graphs.append(new_cases_smoothed_query1(data))
-        graphs.append(get_positivity_rate_color_coded_scatter(data))
+        # graphs.append(get_positivity_rate_color_coded_scatter(data))
         
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     elif query_index == 2:
@@ -113,10 +121,10 @@ def get_query(query_index, country_list):
         graphs.append(get_line_graph_new_deaths_smoothed(data))
         if len(interaction_type) != 0:
             graphs.append(get_interaction_graph(data, interaction_type))
-            if interaction_type == "hospital_beds_death_interaction":
-                graphs.append(get_metric_rank_graph(data, "hostpital_beds"))
-            else:
-                graphs.append(get_metric_rank_graph(data, interaction_type.split("_")[0]))
+            # if interaction_type == "hospital_beds_death_interaction":
+            #     graphs.append(get_metric_rank_graph(data, "hostpital_beds"))
+            # else:
+            #     graphs.append(get_metric_rank_graph(data, interaction_type.split("_")[0]))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     elif query_index == 4:
         country_list = country_list.split(",")
@@ -137,6 +145,16 @@ def get_query(query_index, country_list):
         data = pd.read_sql(query, db_obj.engine)
         graphs = []
         graphs.append(get_line_graph(data, "gii"))
+        return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    elif query_index == 6:
+        country_list = country_list.split(",")
+        country_list = ",".join([f"'{country}'" for country in country_list])
+        with open("queries/query6.sql", "r") as f:
+            query = f.read()
+        query = query.replace(":country_list", country_list)
+        data = pd.read_sql(query, db_obj.engine)
+        graphs = []
+        graphs.append(plot_dual_axis_line_graph(data))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
         
 

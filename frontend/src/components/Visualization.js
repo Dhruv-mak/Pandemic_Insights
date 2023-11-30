@@ -6,7 +6,7 @@ import Query2 from "./queries/Query2";
 import Query3 from "./queries/Query3";
 import Query4 from "./queries/Query4";
 import Query5 from "./queries/Query5";
-
+import Query6 from "./queries/Query6";
 export default function Visualization({ userType }) {
   const tabs = [
     { id: "query1", href: "#query1", label: "Query1" },
@@ -14,12 +14,13 @@ export default function Visualization({ userType }) {
     { id: "query3", href: "#query3", label: "Query3" },
     { id: "query4", href: "#query4", label: "Query4" },
     { id: "query5", href: "#query5", label: "Query5" },
+    { id: "query6", href: "#query6", label: "Query6" },
   ];
 
   const queryMap = {
     Doctors: [0, 1, 2],
     Epidemiologists: [0, 1, 2, 3],
-    "Policy Makers": [0, 1, 2, 3, 4],
+    "Policy Makers": [0, 1, 2, 3, 4, 5],
     "General Public": [0, 4],
   };
 
@@ -60,7 +61,16 @@ export default function Visualization({ userType }) {
             <Query4 />
           </div>
         )}
-        {selectedTab === "query5" && <div><Query5/></div>}
+        {selectedTab === "query5" && (
+          <div>
+            <Query5 />
+          </div>
+        )}
+        {selectedTab === "query6" && (
+          <div>
+            <Query6 />
+          </div>
+        )}
       </div>
     </div>
   );
