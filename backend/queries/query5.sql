@@ -11,6 +11,7 @@ WITH FemaleIndicators AS (
         lfprf
     FROM "DMAKWANA"."Inequality"
     WHERE MMR BETWEEN 10 AND 1000 AND ABR > 0.1 -- Ensure ABR is greater than 0.1
+    AND country IN (:country_list)
 ),
 MaleIndicators AS (
     SELECT
@@ -18,6 +19,7 @@ MaleIndicators AS (
         POWER((prm * sem), 1/2) AS Empowerment,
         LFPRM
     FROM "DMAKWANA"."Inequality"
+    WHERE country IN (:country_list)
 ),
 FemaleGII AS (
     SELECT
@@ -47,7 +49,8 @@ Final as(
 select country, year ,((POWER(((10/mmr) * (1/abr)), 1/2)) + 1) AS HealthX,
  ((POWER((prf * sef), 1/2) + POWER((prf * sef), 1/2))/2) AS empX,
  ((lfprf + lfprm)/2) AS lfprX
-from global_inequality ),
+from "DMAKWANA"."Inequality"
+WHERE country IN (:country_list)),
 
 final1 as ( select country, year, POWER((healthX * empX * lfprX), 1/3) as GFM from final),
 

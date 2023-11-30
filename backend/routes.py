@@ -32,7 +32,7 @@ from graph_utility import (
     get_line_graph_new_deaths_smoothed,
     get_interaction_graph,
     get_metric_rank_graph,
-    get_hdi_line_graph,
+    get_line_graph,
 )
 
 
@@ -58,6 +58,8 @@ def get_countries(query_index):
         intersection = table1.intersect(table2)
     elif query_index == 4:
         intersection = session.query(HDI.country.distinct()).order_by(HDI.country)
+    elif query_index == 5:
+        intersection = session.query(Inequality.country.distinct()).order_by(Inequality.country)
     result = intersection.all()
     result = [r[0] for r in result]
     session.close()
@@ -124,7 +126,17 @@ def get_query(query_index, country_list):
         query = query.replace(":country_list", country_list)
         data = pd.read_sql(query, db_obj.engine)
         graphs = []
-        graphs.append(get_hdi_line_graph(data))
+        graphs.append(get_line_graph(data, "hdi"))
+        return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    elif query_index == 5:
+        country_list = country_list.split(",")
+        country_list = ",".join([f"'{country}'" for country in country_list])
+        with open("queries/query5.sql", "r") as f:
+            query = f.read()
+        query = query.replace(":country_list", country_list)
+        data = pd.read_sql(query, db_obj.engine)
+        graphs = []
+        graphs.append(get_line_graph(data, "gii"))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
         
 
