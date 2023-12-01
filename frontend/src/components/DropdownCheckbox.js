@@ -7,32 +7,13 @@ const DropdownCheckbox = ({ buttonText, checkboxItems, handleCheck }) => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleSelectAll = () => {
-    setSelectAllChecked(!selectAllChecked);
-
-    const updatedItems = checkboxItems.map((item) => ({
-      ...item,
-      checked: !selectAllChecked,
-    }));
-
-    handleCheck(updatedItems);
-  };
-
-  const handleSingleCheck = (id) => {
-    const updatedItems = checkboxItems.map((item) =>
-      item.id === id ? { ...item, checked: !item.checked } : item
-    );
-
-    handleCheck(updatedItems);
-  };
-
   return (
     <div className="relative inline-block text-left">
       {/* Button */}
       <button
         id="dropdownCheckboxButton"
         onClick={toggleDropdown}
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="text-white bg-slate-800/80 hover:bg-slate-800/90 focus:ring-4 focus:outline-none focus:ring-slate-800/95 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
         type="button"
       >
         {buttonText}{" "}
