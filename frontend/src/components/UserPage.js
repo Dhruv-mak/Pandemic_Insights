@@ -10,7 +10,7 @@ const Users = ({ users }) => {
   return (
     <div
       id="users"
-      className="bg-[#c8becc] bg-gradient-to-br from-[#a26e25] via-[#ffffff] to-[#0c555c] pb-12  flex justify-center items-center"
+      className="bg-[#c8becc] bg-gradient-to-br from-[#a26e25] via-[#ffffff] to-[#0c555c] pb-12 min-h-screen flex justify-center items-center"
     >
       <div className="flex flex-row flex-wrap gap-10 justify-center">
         <Link to="/Doctors"><Card title="Doctors" img_src={doctorImage}></Card></Link>
