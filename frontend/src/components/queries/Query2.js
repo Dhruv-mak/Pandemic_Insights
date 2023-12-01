@@ -46,7 +46,7 @@ const Query1 = () => {
   return (
     <div className="Visual mx-28">
       <div className="w-[75%] pl-3 pt-10 text-2xl text-slate-900 font-extrabold">
-        GII Calculator (Gender Inequality Index (GII) Calculator)
+        GII Calculator (Gender Inequality Index Calculator)
       </div>
       <div className="w-[75%] pl-3 pt-5 text-l text-slate-900 font-bold">
         This section is designed to compute the Gender Inequality Index for
