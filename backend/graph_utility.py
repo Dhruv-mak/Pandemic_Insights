@@ -149,18 +149,103 @@ def get_stacked_area_chart(data):
     return fig
 
 
+# def get_line_graph_testing_quartile(data):
+#     # Ensure the 'date' column is a datetime type
+#     data['date'] = pd.to_datetime(data['date'])
+
+#     # Create the line graph using Plotly Express
+#     fig = px.line(
+#         data,
+#         x="date",
+#         y="testing_quartile",
+#         color="country",
+#         title="COVID-19 Testing Quartile Over Time by Country",
+#     )
+
+#     # Define colors for a dark theme
+#     dark_bgcolor = "#1e293b"  # Dark gray
+#     light_text = "#e5e5e5"  # Light gray for text
+#     grid_color = "#3f3f3f"  # Slightly lighter gray for the grid
+
+#     # Update layout for dark theme
+#     fig.update_layout(
+#         title={
+#             "text": "COVID-19 Testing Quartile Over Time by Country",
+#             "y": 0.9,
+#             "x": 0.5,
+#             "xanchor": "center",
+#             "yanchor": "top",
+#             "font": dict(color=light_text, size=17),  # Setting title color here
+#         },
+#         xaxis_title="Date",
+#         yaxis_title="Testing Quartile",
+#         xaxis=dict(
+#             showline=True,
+#             showgrid=True,  # Set to True to show the gridlines
+#             showticklabels=True,
+#             linecolor=light_text,
+#             linewidth=2,
+#             ticks="outside",
+#             tickfont=dict(family="Arial", size=12, color=light_text),
+#             gridcolor=grid_color,  # Grid color to match the theme
+#         ),
+#         yaxis=dict(
+#             showgrid=True,  # Set to True to show the gridlines
+#             zeroline=False,
+#             showline=False,
+#             showticklabels=True,
+#             gridcolor=grid_color,  # Grid color to match the theme
+#             tickfont=dict(color=light_text),  # Tick font color
+#         ),
+#         autosize=True,
+#         margin=dict(autoexpand=True),
+#         showlegend=True,
+#         plot_bgcolor=dark_bgcolor,  # Background color for the plot
+#         paper_bgcolor=dark_bgcolor,  # Background color for the paper
+#         font=dict(color=light_text),  # General font color
+#     )
+
+#     # Customize the legend to match the dark theme
+#     fig.update_layout(legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)))
+
+#     return fig
+
 def get_line_graph_testing_quartile(data):
     # Ensure the 'date' column is a datetime type
     data['date'] = pd.to_datetime(data['date'])
 
-    # Create the line graph using Plotly Express
-    fig = px.line(
-        data,
-        x="date",
-        y="testing_quartile",
-        color="country",
-        title="COVID-19 Testing Quartile Over Time by Country",
-    )
+    # Create a figure with secondary y-axis using make_subplots
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+    # Get unique countries
+    countries = data['country'].unique()
+
+    # Loop through each country to add traces
+    for country in countries:
+        country_data = data[data['country'] == country]
+
+        # Add trace for 'testing_quartile'
+        fig.add_trace(
+            go.Scatter(
+                x=country_data['date'],
+                y=country_data['testing_quartile'],
+                name=f'{country} - Testing Quartile',
+                mode='lines',
+            ),
+            secondary_y=False,
+        )
+
+        # Add trace for 'test_positivity_rate'
+        fig.add_trace(
+            go.Scatter(
+                x=country_data['date'],
+                y=country_data['test_positivity_rate'],
+                name=f'{country} - Test Positivity Rate',
+                mode='lines',
+                line=dict(dash='dot'),  # Optional: different line style
+            ),
+            secondary_y=True,
+        )
 
     # Define colors for a dark theme
     dark_bgcolor = "#1e293b"  # Dark gray
@@ -170,46 +255,47 @@ def get_line_graph_testing_quartile(data):
     # Update layout for dark theme
     fig.update_layout(
         title={
-            "text": "COVID-19 Testing Quartile Over Time by Country",
+            "text": "COVID-19 Testing Metrics Over Time by Country",
             "y": 0.9,
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
-            "font": dict(color=light_text, size=17),  # Setting title color here
+            "font": dict(color=light_text, size=17)
         },
         xaxis_title="Date",
-        yaxis_title="Testing Quartile",
         xaxis=dict(
             showline=True,
-            showgrid=True,  # Set to True to show the gridlines
+            showgrid=True,
             showticklabels=True,
             linecolor=light_text,
             linewidth=2,
             ticks="outside",
             tickfont=dict(family="Arial", size=12, color=light_text),
-            gridcolor=grid_color,  # Grid color to match the theme
-        ),
-        yaxis=dict(
-            showgrid=True,  # Set to True to show the gridlines
-            zeroline=False,
-            showline=False,
-            showticklabels=True,
-            gridcolor=grid_color,  # Grid color to match the theme
-            tickfont=dict(color=light_text),  # Tick font color
+            gridcolor=grid_color,
         ),
         autosize=True,
         margin=dict(autoexpand=True),
-        showlegend=True,
-        plot_bgcolor=dark_bgcolor,  # Background color for the plot
-        paper_bgcolor=dark_bgcolor,  # Background color for the paper
-        font=dict(color=light_text),  # General font color
+        plot_bgcolor=dark_bgcolor,
+        paper_bgcolor=dark_bgcolor,
+        font=dict(color=light_text),
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text))
     )
 
-    # Customize the legend to match the dark theme
-    fig.update_layout(legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)))
+    # Customize y-axes
+    fig.update_yaxes(
+        title_text="Testing Quartile",
+        secondary_y=False,
+        gridcolor=grid_color,
+        tickfont=dict(color=light_text)
+    )
+    fig.update_yaxes(
+        title_text="Test Positivity Rate",
+        secondary_y=True,
+        gridcolor=grid_color,
+        tickfont=dict(color=light_text)
+    )
 
     return fig
-    
 
 def new_cases_smoothed_query1(data):
     fig = px.line(
