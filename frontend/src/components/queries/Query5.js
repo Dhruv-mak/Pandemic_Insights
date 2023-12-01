@@ -44,7 +44,7 @@ const Query2 = () => {
   };
 
   const handleEmissionTypeCheck = (itemID) => {
-    setCheckedEmissionTypes([itemID])
+    setCheckedEmissionTypes([itemID]);
   };
   const checkboxItems = countries.map((country) => {
     return {
@@ -71,26 +71,46 @@ const Query2 = () => {
   });
   return (
     <div className="Visual mx-28">
-      <div className="ml-36 mt-10">
+      <div className="w-[75%] pl-3 pt-10 text-2xl text-slate-900 font-extrabold">
+        Carbon Emission Sources Year-over-Year Analysis (CEA)
+      </div>
+      <div className="w-[75%] pl-3 pt-5 text-l text-slate-900 font-bold">
+        This section is designed to evaluate the changes in carbon dioxide
+        emissions from different sources across countries and globally over
+        time. It allows users to break down emissions into categories like coal,
+        oil, gas, cement, and flaring, and calculate their respective
+        contributions to the total CO2 emissions. This analysis is crucial for
+        understanding how different sectors contribute to overall emissions and
+        for monitoring the progress of emission reduction efforts in various
+        countries and on a global scale.
+      </div>
+      <div className="ml-10 mt-10">
         <DropdownCheckbox
           buttonText="Select a Country"
           checkboxItems={checkboxItems}
           handleCheck={handleCountryCheck}
         />
         <div className="mx-5 inline">
-        <DropdownButton
-          buttonText="Select an Emission Type"
-          items={emissionTypeItems}
-          handleClick={handleEmissionTypeCheck}
-        />
+          <DropdownButton
+            buttonText="Select an Emission Type"
+            items={emissionTypeItems}
+            handleClick={handleEmissionTypeCheck}
+          />
         </div>
       </div>
       <div className="flex flex-col">
         {queryGraph.map((graph, index) => (
-          <div className="mx-auto mt-5 rounded-2xl hover:shadow-2xl overflow-hidden" key={index}>
-            <Plot 
-              data={graph.data} 
-              layout={{...graph.layout, width: window.innerWidth * 0.65, height: window.innerHeight * 0.7}}
+          <div
+            className="mx-auto mt-5 rounded-2xl hover:shadow-2xl overflow-hidden"
+            key={index}
+          >
+            <Plot
+              data={graph.data}
+              layout={{
+                ...graph.layout,
+                width: window.innerWidth * 0.65,
+                height: window.innerHeight * 0.7,
+              }}
             />
           </div>
         ))}
