@@ -33,7 +33,7 @@ export default function Visualization({ userType }) {
   };
 
   return (
-    <div className="Visual">
+    <div className="Visual bg-[#c8becc] bg-gradient-to-br from-[#cebd5dab] via-[#ffffff] to-[#1697a3b6] min-h-screen">
       <div>
         <Navbar2 />
       </div>
