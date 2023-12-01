@@ -2,6 +2,7 @@ from plotly import graph_objs as go
 from plotly import express as px
 import plotly
 import pandas as pd
+from plotly.subplots import make_subplots
 
 
 def get_line_graph_query1(data):
@@ -687,25 +688,117 @@ def get_metric_rank_graph(data, metric):
     return fig
 
 
-def get_line_graph(data, metric):
-    # Ensure the data is sorted correctly
+# def get_line_graph(data, metric, indicator):
+#     # Ensure the data is sorted correctly
+#     data = data.sort_values(by=["country", "year"])
+
+#     # Determine the title based on the metric
+#     title = (
+#         "Human Development Index (HDI) Over Time by Country"
+#         if metric == "hdi"
+#         else "Gender Inequality Index (GII) Over Time by Country"
+#     )
+
+#     # Create the line graph
+#     fig = px.line(
+#         data,
+#         x="year",
+#         y=metric,
+#         color="country",
+#         title=title,
+#     )
+
+#     # Define colors for a dark theme
+#     dark_bgcolor = "#1e293b"  # Dark gray background
+#     light_text = "#e5e5e5"  # Light gray text
+#     grid_color = "#3f3f3f"  # Slightly lighter gray for grid lines
+
+#     # Update layout with dark theme colors
+#     fig.update_layout(
+#         xaxis_title="Year",
+#         yaxis_title=(
+#             "Human Development Index (HDI)"
+#             if metric == "hdi"
+#             else "Gender Inequality Index (GII)"
+#         ),
+#         xaxis=dict(
+#             showline=True,
+#             showgrid=True,
+#             showticklabels=True,
+#             linecolor=grid_color,
+#             linewidth=2,
+#             ticks="outside",
+#             tickfont=dict(family="Arial", size=12, color=light_text),
+#         ),
+#         yaxis=dict(
+#             showgrid=True,
+#             zeroline=False,
+#             showline=False,
+#             showticklabels=True,
+#             gridcolor=grid_color,
+#             tickfont=dict(color=light_text),
+#         ),
+#         autosize=True,
+#         margin=dict(autoexpand=True),
+#         showlegend=True,
+#         plot_bgcolor=dark_bgcolor,
+#         paper_bgcolor=dark_bgcolor,
+#         font=dict(color=light_text),
+#     )
+
+#     # Customize the legend and title for the dark theme
+#     fig.update_layout(
+#         legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
+#         title=dict(
+#             text=title,
+#             x=0.5,
+#             xanchor="center",
+#             yanchor="top",
+#             font=dict(size=17, color=light_text),
+#         ),
+#     )
+
+#     return fig
+
+def get_line_graph(data, metric, indicator):
+    # Ensure the 'year' column is a datetime type
+    data['year'] = pd.to_datetime(data['year'], format='%Y')
+
+    # Sort data
     data = data.sort_values(by=["country", "year"])
 
-    # Determine the title based on the metric
-    title = (
-        "Human Development Index (HDI) Over Time by Country"
-        if metric == "hdi"
-        else "Gender Inequality Index (GII) Over Time by Country"
-    )
+    # Create a figure with secondary y-axis using make_subplots
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
 
-    # Create the line graph
-    fig = px.line(
-        data,
-        x="year",
-        y=metric,
-        color="country",
-        title=title,
-    )
+    # Get unique countries
+    countries = data['country'].unique()
+
+    # Loop through each country to add traces
+    for country in countries:
+        country_data = data[data['country'] == country]
+
+        # Add trace for the primary metric
+        fig.add_trace(
+            go.Scatter(
+                x=country_data['year'],
+                y=country_data[metric],
+                name=f'{country} - {metric.title()}',
+                mode='lines'
+            ),
+            secondary_y=False,
+        )
+
+        # Add trace for the indicator
+        fig.add_trace(
+            go.Scatter(
+                x=country_data['year'],
+                y=country_data[indicator],
+                name=f'{country} - {indicator.title()}',
+                mode='lines',
+                line=dict(dash='dot')  # Different line style for the indicator
+            ),
+            secondary_y=True,
+        )
 
     # Define colors for a dark theme
     dark_bgcolor = "#1e293b"  # Dark gray background
@@ -714,12 +807,15 @@ def get_line_graph(data, metric):
 
     # Update layout with dark theme colors
     fig.update_layout(
+        title={
+            "text": f"{metric.title()} and {indicator.title()} Over Time by Country",
+            "y": 0.9,
+            "x": 0.5,
+            "xanchor": "center",
+            "yanchor": "top",
+            "font": dict(color=light_text, size=17)
+        },
         xaxis_title="Year",
-        yaxis_title=(
-            "Human Development Index (HDI)"
-            if metric == "hdi"
-            else "Gender Inequality Index (GII)"
-        ),
         xaxis=dict(
             showline=True,
             showgrid=True,
@@ -729,38 +825,30 @@ def get_line_graph(data, metric):
             ticks="outside",
             tickfont=dict(family="Arial", size=12, color=light_text),
         ),
-        yaxis=dict(
-            showgrid=True,
-            zeroline=False,
-            showline=False,
-            showticklabels=True,
-            gridcolor=grid_color,
-            tickfont=dict(color=light_text),
-        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
         plot_bgcolor=dark_bgcolor,
         paper_bgcolor=dark_bgcolor,
         font=dict(color=light_text),
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text))
     )
 
-    # Customize the legend and title for the dark theme
-    fig.update_layout(
-        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
-        title=dict(
-            text=title,
-            x=0.5,
-            xanchor="center",
-            yanchor="top",
-            font=dict(size=17, color=light_text),
-        ),
+    # Customize y-axes for each metric
+    fig.update_yaxes(
+        title_text=metric.title(),
+        secondary_y=False,
+        gridcolor=grid_color,
+        tickfont=dict(color=light_text)
+    )
+    fig.update_yaxes(
+        title_text=indicator.title(),
+        secondary_y=True,
+        gridcolor=grid_color,
+        tickfont=dict(color=light_text)
     )
 
     return fig
-
-
-from plotly.subplots import make_subplots
 
 
 def plot_dual_axis_line_graph(data):
