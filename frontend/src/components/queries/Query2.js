@@ -1,50 +1,39 @@
 import React from "react";
 import DropdownCheckbox from "../DropdownCheckbox";
-import DropdownButton from "../DropdownButton";
 import { get_coutry_list } from "../../services/api";
 import { get_query } from "../../services/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import Plot from "react-plotly.js";
 
-const Query2 = () => {
-  const [checkedCountries, setCheckedCountries] = useState([]);
-  const [checkedEmissionTypes, setCheckedEmissionTypes] = useState([]);
+const Query1 = () => {
+  const [checkedValues, setCheckedValues] = useState([]);
   const [countries, setCountries] = useState([]);
   const [queryGraph, setQueryGraph] = useState([]);
-
   useEffect(() => {
     async function getCountryList() {
-      const data = await get_coutry_list(2);
+      const data = await get_coutry_list(5);
       setCountries(data);
     }
     getCountryList();
   }, []);
-
   useEffect(() => {
     async function getQueryGraph() {
-      if (checkedCountries.length === 0 || checkedEmissionTypes.length === 0) {
+      if (checkedValues.length === 0) {
         return;
       }
-      const queryGraphFetched = await get_query(2, checkedCountries, {
-        emission_type: checkedEmissionTypes,
-      });
+      const queryGraphFetched = await get_query(5, checkedValues);
       setQueryGraph(queryGraphFetched);
     }
     getQueryGraph();
-  }, [checkedCountries, checkedEmissionTypes]);
-
-  const handleCountryCheck = (itemID) => {
-    setCheckedCountries((prevValues) => {
+  }, [checkedValues]);
+  const handleCheck = (itemID) => {
+    setCheckedValues((prevValues) => {
       if (prevValues.includes(itemID)) {
         return prevValues.filter((id) => id !== itemID);
       } else {
         return [...prevValues, itemID];
       }
     });
-  };
-
-  const handleEmissionTypeCheck = (itemID) => {
-    setCheckedEmissionTypes([itemID])
   };
   const checkboxItems = countries.map((country) => {
     return {
@@ -54,40 +43,18 @@ const Query2 = () => {
       label: country,
     };
   });
-  const emissionTypes = [
-    "coal_ratio_change",
-    "oil_ratio_change",
-    "gas_ratio_change",
-    "cement_ratio_change",
-    "flaring_ratio_change",
-  ];
-  const emissionTypeItems = emissionTypes.map((emissionType) => {
-    return {
-      id: emissionType,
-      value: emissionType,
-      checked: false,
-      label: emissionType,
-    };
-  });
   return (
     <div className="Visual mx-28">
       <div className="ml-36 mt-10">
         <DropdownCheckbox
           buttonText="Select a Country"
           checkboxItems={checkboxItems}
-          handleCheck={handleCountryCheck}
+          handleCheck={handleCheck}
         />
-        <div className="mx-5 inline">
-        <DropdownButton
-          buttonText="Select an Emission Type"
-          items={emissionTypeItems}
-          handleClick={handleEmissionTypeCheck}
-        />
-        </div>
       </div>
       <div className="flex flex-col">
         {queryGraph.map((graph, index) => (
-          <div className="mx-auto mt-5 rounded-2xl hover:shadow-2xl overflow-hidden" key={index}>
+          <div className="mx-auto" key={index}>
             <Plot 
               data={graph.data} 
               layout={{...graph.layout, width: window.innerWidth * 0.65, height: window.innerHeight * 0.7}}
@@ -98,4 +65,4 @@ const Query2 = () => {
     </div>
   );
 };
-export default Query2;
+export default Query1;
