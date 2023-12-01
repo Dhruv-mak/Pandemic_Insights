@@ -19,7 +19,7 @@ const LandingPage = ({ childs }) => {
             Pandemic Insights
           </h1>
           <p className="w-[75%] pl-3 text-xl text-slate-900 font-extrabold">
-          Explore COVID-19 trends with our database-powered web tool. Analyze data, spot trends, and gain insights into the pandemic's impact. Join us in understanding the COVID-19 story.
+          Delve into the evolving narrative of the COVID-19 pandemic with our advanced analytical tool. Harness the power of comprehensive data and sophisticated queries to uncover hidden trends and critical insights. Collaborate with us in crafting a deeper understanding of the pandemic's multifaceted impact on our world.
           </p>
         </div>
 
