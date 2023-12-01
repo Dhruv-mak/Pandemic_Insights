@@ -1,39 +1,50 @@
 import React from "react";
 import DropdownCheckbox from "../DropdownCheckbox";
+import DropdownButton from "../DropdownButton";
 import { get_coutry_list } from "../../services/api";
 import { get_query } from "../../services/api";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 
-const Query1 = () => {
-  const [checkedValues, setCheckedValues] = useState([]);
+const Query2 = () => {
+  const [checkedCountries, setCheckedCountries] = useState([]);
+  const [checkedInteractionTypes, setCheckedInteractionTypes] = useState([]);
   const [countries, setCountries] = useState([]);
   const [queryGraph, setQueryGraph] = useState([]);
+
   useEffect(() => {
     async function getCountryList() {
-      const data = await get_coutry_list(6);
+      const data = await get_coutry_list(3);
       setCountries(data);
     }
     getCountryList();
   }, []);
+
   useEffect(() => {
     async function getQueryGraph() {
-      if (checkedValues.length === 0) {
+      if (checkedCountries.length === 0) {
         return;
       }
-      const queryGraphFetched = await get_query(6, checkedValues);
+      const queryGraphFetched = await get_query(3, checkedCountries, {
+        interaction_type: checkedInteractionTypes,
+      });
       setQueryGraph(queryGraphFetched);
     }
     getQueryGraph();
-  }, [checkedValues]);
-  const handleCheck = (itemID) => {
-    setCheckedValues((prevValues) => {
+  }, [checkedCountries, checkedInteractionTypes]);
+
+  const handleCountryCheck = (itemID) => {
+    setCheckedCountries((prevValues) => {
       if (prevValues.includes(itemID)) {
         return prevValues.filter((id) => id !== itemID);
       } else {
         return [...prevValues, itemID];
       }
     });
+  };
+
+  const handleInteractionTypeCheck = (itemID) => {
+    setCheckedInteractionTypes([itemID])
   };
   const checkboxItems = countries.map((country) => {
     return {
@@ -43,14 +54,35 @@ const Query1 = () => {
       label: country,
     };
   });
+  const interactionTypes = [
+    "gdp_death_interaction",
+    "cardiovasc_death_interaction",
+    "diabetes_death_interaction",
+    "hospital_beds_death_interaction",
+  ];
+  const emissionTypeItems = interactionTypes.map((emissionType) => {
+    return {
+      id: emissionType,
+      value: emissionType,
+      checked: false,
+      label: emissionType,
+    };
+  });
   return (
     <div className="Visual mx-28">
-      <div className="ml-36 mt-10">
+      <div className="ml-10 mt-10">
         <DropdownCheckbox
           buttonText="Select a Country"
           checkboxItems={checkboxItems}
-          handleCheck={handleCheck}
+          handleCheck={handleCountryCheck}
         />
+        <div className="mx-5 inline">
+        <DropdownButton
+          buttonText="Select an Emission Type"
+          items={emissionTypeItems}
+          handleClick={handleInteractionTypeCheck}
+        />
+        </div>
       </div>
       <div className="flex flex-col">
         {queryGraph.map((graph, index) => (
@@ -65,4 +97,4 @@ const Query1 = () => {
     </div>
   );
 };
-export default Query1;
+export default Query2;

@@ -25,7 +25,7 @@ from models import (
 from graph_utility import (
     get_line_graph_query1,
     get_stacked_area_chart,
-    get_percentile_graph_query1,
+    # get_percentile_graph_query1,
     new_cases_smoothed_query1,
     get_positivity_rate_color_coded_scatter,
     get_global_vs_country_trend_line_graph,
@@ -34,6 +34,8 @@ from graph_utility import (
     get_metric_rank_graph,
     get_line_graph,
     plot_dual_axis_line_graph,
+    generate_gii_heatmap,
+    get_line_graph_testing_quartile,
 )
 
 
@@ -88,7 +90,7 @@ def get_query(query_index, country_list):
             graphs.append(get_stacked_area_chart(data))
         except:
             pass
-        # graphs.append(get_percentile_graph_query1(data))
+        graphs.append(get_line_graph_testing_quartile(data))
         graphs.append(new_cases_smoothed_query1(data))
         # graphs.append(get_positivity_rate_color_coded_scatter(data))
         

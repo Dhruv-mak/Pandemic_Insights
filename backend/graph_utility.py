@@ -149,44 +149,67 @@ def get_stacked_area_chart(data):
     return fig
 
 
-def get_percentile_graph_query1(data):
+def get_line_graph_testing_quartile(data):
+    # Ensure the 'date' column is a datetime type
+    data['date'] = pd.to_datetime(data['date'])
+
+    # Create the line graph using Plotly Express
     fig = px.line(
         data,
         x="date",
-        y="testing_volume",
-        color="testing_quartile",
-        line_group="country",
-        title="Testing Volume Over Time by Quartile for Each Country",
-        labels={
-            "date": "Date",
-            "testing_volume": "Testing Volume",
-            "testing_quartile": "Testing Quartile",
-            "country": "Country",
-        },
-        category_orders={"testing_quartile": [1, 2, 3, 4]},
-    )  # Ensures quartiles are in order
+        y="testing_quartile",
+        color="country",
+        title="COVID-19 Testing Quartile Over Time by Country",
+    )
 
-    # Update layout for better readability
+    # Define colors for a dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray
+    light_text = "#e5e5e5"  # Light gray for text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for the grid
+
+    # Update layout for dark theme
     fig.update_layout(
+        title={
+            "text": "COVID-19 Testing Quartile Over Time by Country",
+            "y": 0.9,
+            "x": 0.5,
+            "xanchor": "center",
+            "yanchor": "top",
+            "font": dict(color=light_text, size=17),  # Setting title color here
+        },
         xaxis_title="Date",
-        yaxis_title="Testing Volume",
+        yaxis_title="Testing Quartile",
         xaxis=dict(
             showline=True,
-            showgrid=True,
+            showgrid=True,  # Set to True to show the gridlines
             showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
+            linecolor=light_text,
             linewidth=2,
             ticks="outside",
-            tickfont=dict(family="Arial", size=12, color="rgb(82, 82, 82)"),
+            tickfont=dict(family="Arial", size=12, color=light_text),
+            gridcolor=grid_color,  # Grid color to match the theme
         ),
-        yaxis=dict(showgrid=True, zeroline=False, showline=False, showticklabels=True),
+        yaxis=dict(
+            showgrid=True,  # Set to True to show the gridlines
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+            gridcolor=grid_color,  # Grid color to match the theme
+            tickfont=dict(color=light_text),  # Tick font color
+        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
-        plot_bgcolor="white",
+        plot_bgcolor=dark_bgcolor,  # Background color for the plot
+        paper_bgcolor=dark_bgcolor,  # Background color for the paper
+        font=dict(color=light_text),  # General font color
     )
-    return fig
 
+    # Customize the legend to match the dark theme
+    fig.update_layout(legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)))
+
+    return fig
+    
 
 def new_cases_smoothed_query1(data):
     fig = px.line(
@@ -745,5 +768,47 @@ def plot_dual_axis_line_graph(data):
     fig.update_yaxes(
         title_text="Lagged Vaccination Rate", secondary_y=True, showgrid=False
     )
+
+    return fig
+
+def generate_gii_heatmap(data):
+    # Convert year to string to work with plotly express
+    data['year'] = data['year'].astype(str)
+
+    fig = px.choropleth(
+        data,
+        locations="country",
+        locationmode="country names",
+        color="gii",
+        hover_name="country",
+        animation_frame="year",
+        range_color=[data['gii'].min(), data['gii'].max()],
+        color_continuous_scale=px.colors.sequential.Plasma,
+        title="Global Human Development Index (HDI) Over Time",
+    )
+
+    # Update layout for a better visual appearance
+    fig.update_layout(
+        margin={"r":0,"t":50,"l":0,"b":0},
+        paper_bgcolor="#1f1f1f",
+        geo=dict(
+            bgcolor= 'rgba(0,0,0,0)',
+            lakecolor='rgba(0,0,0,0)',
+            landcolor='rgba(0,0,0,0)',
+            subunitcolor='rgb(100,100,100)'
+        ),
+        coloraxis_colorbar=dict(
+            title="GII",
+            tickvals=[0, 0.5, 1],
+            ticktext=["Low", "Medium", "High"],
+        ),
+    )
+
+    # Remove the default animation bar and play button
+    fig.layout.updatemenus = [dict(
+        type="buttons",
+        showactive=False,
+        buttons=[dict(label="Play", method="animate", args=[None, {"frame": {"duration": 0, "redraw": False}, "fromcurrent": True}])]
+    )]
 
     return fig

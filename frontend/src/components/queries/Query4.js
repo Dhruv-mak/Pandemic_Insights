@@ -11,7 +11,7 @@ const Query1 = () => {
   const [queryGraph, setQueryGraph] = useState([]);
   useEffect(() => {
     async function getCountryList() {
-      const data = await get_coutry_list(4);
+      const data = await get_coutry_list(6);
       setCountries(data);
     }
     getCountryList();
@@ -21,7 +21,7 @@ const Query1 = () => {
       if (checkedValues.length === 0) {
         return;
       }
-      const queryGraphFetched = await get_query(4, checkedValues);
+      const queryGraphFetched = await get_query(6, checkedValues);
       setQueryGraph(queryGraphFetched);
     }
     getQueryGraph();
