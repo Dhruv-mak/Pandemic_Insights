@@ -16,7 +16,7 @@ const Tabs = ({ tabs }) => {
     const total = await get_count();
     alert(`Total tuple count is ${total}`);
     // Perform the navigation programmatically
-    window.location.href = "/TuplesCounter"; // Change the URL to your desired route
+    //window.location.href = "/TuplesCounter"; // Change the URL to your desired route
   };
 
   return (
