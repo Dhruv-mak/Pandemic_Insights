@@ -33,7 +33,7 @@ final as(
         CASE
             WHEN t."NEW_TESTS_SMOOTHED" = 0 THEN NULL -- Avoid division by zero
             ELSE ROUND(
-                (t."NEW_TESTS_SMOOTHED" - c.new_cases_smoothed) / NULLIF(t."NEW_TESTS_SMOOTHED", 0),
+                (c.new_cases_smoothed) / NULLIF(t."NEW_TESTS_SMOOTHED", 0),
                 5
             )
         END AS test_positivity_rate,
