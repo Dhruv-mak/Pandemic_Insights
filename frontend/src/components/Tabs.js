@@ -1,6 +1,8 @@
 import React from "react";
 import logo from "../assets/images/logo.jpg";
 import { get_count } from "../services/api";
+import { Link } from "react-router-dom";
+
 const Tabs = ({ tabs }) => {
   const smoothScrollTo = (id) => {
     const element = document.getElementById(id);
@@ -9,14 +11,18 @@ const Tabs = ({ tabs }) => {
     }
   };
 
-  const handleCountClick = async () => {
+  const handleCountClick = async (e) => {
+    e.preventDefault(); // Prevent the default behavior of anchor tag
     const total = await get_count();
     alert(`Total tuple count is ${total}`);
+    // Perform the navigation programmatically
+    window.location.href = "/TuplesCounter"; // Change the URL to your desired route
   };
+
   return (
     <div className="">
-      <div className="flex flex-row  pt-4">
-        <img src={logo} alt="logo" className="h-12 w-10 pt-2"></img>
+      <div className="flex flex-row pt-4">
+        <img src={logo} alt="logo" className="h-12 w-10 pt-2" />
         <ul
           className="mb-4 flex flex-row list-none border-b-0 pl-0"
           role="tablist"
@@ -34,7 +40,7 @@ const Tabs = ({ tabs }) => {
                 onClick={(e) => {
                   e.preventDefault();
                   if (tab.id === "count") {
-                    handleCountClick();
+                    handleCountClick(e); // Call handleCountClick with event
                   } else {
                     smoothScrollTo(tab.href.slice(1));
                   }

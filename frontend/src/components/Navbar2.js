@@ -9,36 +9,7 @@ export default function Navbar2() {
       label: "Home",
       isActive: true,
     }
-    // {
-    //   id: "tabs-profile3",
-    //   href: "#query1",
-    //   label: "Query1",
-    //   isActive: true,
-    // },
-    // {
-    //   id: "tabs-profile3",
-    //   href: "#query2",
-    //   label: "Query2",
-    //   isActive: true,
-    // },
-    // {
-    //   id: "tabs-profile3",
-    //   href: "#query3",
-    //   label: "Query3",
-    //   isActive: true,
-    // },
-    // {
-    //   id: "tabs-profile3",
-    //   href: "#query4",
-    //   label: "Query4",
-    //   isActive: true,
-    // },
-    // {
-    //   id: "tabs-profile3",
-    //   href: "#query5",
-    //   label: "Query5",
-    //   isActive: true,
-    // }
+ 
   ];
 
   return (

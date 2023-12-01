@@ -1,5 +1,7 @@
 import React from "react";
 import Tabs from "./Tabs";
+import { Link } from "react-router-dom"; 
+import TuplesCounter from "./TuplesCounter"
 
 export default function NavBar() {
   const tabs = [
