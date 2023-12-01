@@ -7,6 +7,25 @@ const DropdownCheckbox = ({ buttonText, checkboxItems, handleCheck }) => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const handleSelectAll = () => {
+    setSelectAllChecked(!selectAllChecked);
+
+    const updatedItems = checkboxItems.map((item) => ({
+      ...item,
+      checked: !selectAllChecked,
+    }));
+
+    handleCheck(updatedItems);
+  };
+
+  const handleSingleCheck = (id) => {
+    const updatedItems = checkboxItems.map((item) =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    );
+
+    handleCheck(updatedItems);
+  };
+
   return (
     <div className="relative inline-block text-left">
       {/* Button */}
