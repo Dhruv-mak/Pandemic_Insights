@@ -49,6 +49,11 @@ function App() {
           path="/General Public"
           element={<Visualization userType="General Public" />}
         />
+        <Route
+          exact
+          path="/Environmental Scientists"
+          element={<Visualization userType="Environmental Scientists" />}
+        />
        <Route
           exact
           path="/TuplesCounter"

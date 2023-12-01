@@ -22,6 +22,7 @@ export default function Visualization({ userType }) {
     Epidemiologists: [0, 1, 2, 3],
     "Policy Makers": [0, 1, 2, 3, 4, 5],
     "General Public": [0, 4],
+    "Environmental Scientists": [1, 5]
   };
 
   const UserTabs = getUserTabs(queryMap[userType], tabs);
