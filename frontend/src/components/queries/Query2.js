@@ -87,7 +87,7 @@ const Query2 = () => {
       </div>
       <div className="flex flex-col">
         {queryGraph.map((graph, index) => (
-          <div className="mx-auto" key={index}>
+          <div className="mx-auto mt-5 rounded-2xl hover:shadow-2xl overflow-hidden" key={index}>
             <Plot 
               data={graph.data} 
               layout={{...graph.layout, width: window.innerWidth * 0.65, height: window.innerHeight * 0.7}}

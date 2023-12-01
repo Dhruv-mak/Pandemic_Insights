@@ -13,24 +13,50 @@ def get_line_graph_query1(data):
         title="Test Positivity Rate Over Time by Country",
     )
 
+    # Use colors that match the dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray
+    light_text = "#e5e5e5"  # Light gray for text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for the grid
+
     fig.update_layout(
+        title={
+            "text": "Test Positivity Rate Over Time by Country",
+            "y": 0.9,
+            "x": 0.5,
+            "xanchor": "center",
+            "yanchor": "top",
+            "font": dict(color=light_text, size=17),  # Setting title color here
+        },
         xaxis_title="Date",
         yaxis_title="Test Positivity Rate",
         xaxis=dict(
             showline=True,
-            showgrid=False,
+            showgrid=True,  # Set to True to show the gridlines
             showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
+            linecolor=light_text,
             linewidth=2,
             ticks="outside",
-            tickfont=dict(family="Arial", size=12, color="rgb(82, 82, 82)"),
+            tickfont=dict(family="Arial", size=12, color=light_text),
+            gridcolor=grid_color,  # Grid color to match the theme
         ),
-        yaxis=dict(showgrid=False, zeroline=False, showline=False, showticklabels=True),
+        yaxis=dict(
+            showgrid=True,  # Set to True to show the gridlines
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+            gridcolor=grid_color,  # Grid color to match the theme
+            tickfont=dict(color=light_text),  # Tick font color
+        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
-        plot_bgcolor="white",
+        plot_bgcolor=dark_bgcolor,  # Background color for the plot
+        paper_bgcolor=dark_bgcolor,  # Background color for the paper
+        font=dict(color=light_text),  # General font color
     )
+
+    # Customize the legend to match the dark theme
+    fig.update_layout(legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)))
 
     return fig
 
@@ -74,7 +100,12 @@ def get_stacked_area_chart(data):
         labels={"value": "Number of Days", "variable": "Country and Testing Volume"},
     )
 
-    # Update layout
+    # Colors for the dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray
+    light_text = "#e5e5e5"  # Light gray for text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for the grid
+
+    # Update layout for dark theme
     fig.update_layout(
         xaxis_title="Month",
         yaxis_title="Number of Days",
@@ -82,17 +113,39 @@ def get_stacked_area_chart(data):
             showline=True,
             showgrid=True,
             showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
+            linecolor=grid_color,
             linewidth=2,
             ticks="outside",
-            tickfont=dict(family="Arial", size=12, color="rgb(82, 82, 82)"),
+            tickfont=dict(family="Arial", size=12, color=light_text),
         ),
-        yaxis=dict(showgrid=True, zeroline=False, showline=False, showticklabels=True),
+        yaxis=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+            gridcolor=grid_color,
+            tickfont=dict(color=light_text),
+        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
-        plot_bgcolor="white",
+        plot_bgcolor=dark_bgcolor,
+        paper_bgcolor=dark_bgcolor,
+        font=dict(color=light_text),
     )
+
+    # Customize legend and title for the dark theme
+    fig.update_layout(
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
+        title=dict(
+            text="High Testing vs Low Testing Days Over Time by Country",
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+            font=dict(color=light_text, size=17),
+        ),
+    )
+
     return fig
 
 
@@ -144,6 +197,11 @@ def new_cases_smoothed_query1(data):
         title="7-Day Average of New Cases Over Time by Country",
     )
 
+    # Use colors that match the dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray
+    light_text = "#e5e5e5"  # Light gray for text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for the grid
+
     fig.update_layout(
         xaxis_title="Date",
         yaxis_title="7-Day Average of New Cases",
@@ -151,17 +209,39 @@ def new_cases_smoothed_query1(data):
             showline=True,
             showgrid=True,
             showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
+            linecolor=grid_color,
             linewidth=2,
             ticks="outside",
-            tickfont=dict(family="Arial", size=12, color="rgb(82, 82, 82)"),
+            tickfont=dict(family="Arial", size=12, color=light_text),
         ),
-        yaxis=dict(showgrid=True, zeroline=False, showline=False, showticklabels=True),
+        yaxis=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+            gridcolor=grid_color,
+            tickfont=dict(color=light_text),
+        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
-        plot_bgcolor="white",
+        plot_bgcolor=dark_bgcolor,
+        paper_bgcolor=dark_bgcolor,
+        font=dict(color=light_text),
     )
+
+    # Customize legend and title for the dark theme
+    fig.update_layout(
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
+        title=dict(
+            text="7-Day Average of New Cases Over Time by Country",
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+            font=dict(color=light_text, size=17),
+        ),
+    )
+
     return fig
 
 
@@ -271,33 +351,60 @@ def get_global_vs_country_trend_line_graph(data, emission_type):
     # Ensure 'year' column is in datetime format for better x-axis formatting
     if data["year"].dtype != "<M8[ns]":  # Check if not already datetime
         data["year"] = pd.to_datetime(data["year"].astype(str))
+
     # Create the line graph
     fig = px.line(
         data,
         x="year",
         y=emission_type,
         color="country",
-        title=f"{emission_type} Over Time by Country vs Global",
+        title=f"{emission_type.replace('_', ' ').title()} Over Time by Country vs Global",
     )
 
-    # Update layout for better readability
+    # Colors for the dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray
+    light_text = "#e5e5e5"  # Light gray for text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for the grid
+
+    # Update layout for dark theme
     fig.update_layout(
         xaxis_title="Year",
         yaxis_title=emission_type.replace("_", " ").title(),
         xaxis=dict(
             showline=True,
-            showgrid=False,
+            showgrid=True,
             showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
+            linecolor=grid_color,
             linewidth=2,
             ticks="outside",
-            tickfont=dict(family="Arial", size=12, color="rgb(82, 82, 82)"),
+            tickfont=dict(family="Arial", size=12, color=light_text),
         ),
-        yaxis=dict(showgrid=False, zeroline=False, showline=False, showticklabels=True),
+        yaxis=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+            gridcolor=grid_color,
+            tickfont=dict(color=light_text),
+        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
-        plot_bgcolor="white",
+        plot_bgcolor=dark_bgcolor,
+        paper_bgcolor=dark_bgcolor,
+        font=dict(color=light_text),
+    )
+
+    # Customize legend and title for the dark theme
+    fig.update_layout(
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
+        title=dict(
+            text=f"{emission_type.replace('_', ' ').title()} Over Time by Country vs Global",
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+            font=dict(size=17, color=light_text),
+        ),
     )
 
     return fig
@@ -312,23 +419,51 @@ def get_line_graph_new_deaths_smoothed(data):
         title="New Deaths Smoothed Per Million Over Time by Country",
     )
 
+    # Define colors for a dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray background
+    light_text = "#e5e5e5"  # Light gray text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for grid lines
+
+    # Update layout with dark theme colors
     fig.update_layout(
         xaxis_title="Date",
         yaxis_title="New Deaths Smoothed Per Million",
         xaxis=dict(
             showline=True,
-            showgrid=False,
+            showgrid=True,  # Enable grid
             showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
+            linecolor=light_text,
             linewidth=2,
             ticks="outside",
-            tickfont=dict(family="Arial", size=12, color="rgb(82, 82, 82)"),
+            tickfont=dict(family="Arial", size=12, color=light_text),
+            gridcolor=grid_color,  # Set grid color
         ),
-        yaxis=dict(showgrid=False, zeroline=False, showline=False, showticklabels=True),
+        yaxis=dict(
+            showgrid=True,  # Enable grid
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+            gridcolor=grid_color,  # Set grid color
+            tickfont=dict(color=light_text),
+        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
-        plot_bgcolor="white",
+        plot_bgcolor=dark_bgcolor,  # Set plot background color
+        paper_bgcolor=dark_bgcolor,  # Set paper background color
+        font=dict(color=light_text),  # Set font color
+    )
+
+    # Customize the legend and title for the dark theme
+    fig.update_layout(
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
+        title=dict(
+            text="New Deaths Smoothed Per Million Over Time by Country",
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+            font=dict(size=17, color=light_text),
+        ),
     )
 
     return fig
@@ -338,6 +473,11 @@ def get_interaction_graph(data, interaction_metric):
     if interaction_metric not in data.columns:
         raise ValueError(f"Interaction metric '{interaction_metric}' not found in data")
 
+    # Define colors for a dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray background
+    light_text = "#e5e5e5"  # Light gray text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for grid lines
+
     fig = px.line(
         data,
         x="date",
@@ -346,23 +486,46 @@ def get_interaction_graph(data, interaction_metric):
         title=f'{interaction_metric.replace("_", " ").title()} Over Time by Country',
     )
 
+    # Update layout with dark theme colors
     fig.update_layout(
         xaxis_title="Date",
         yaxis_title=interaction_metric.replace("_", " ").title(),
         xaxis=dict(
             showline=True,
-            showgrid=False,
+            showgrid=True,  # Enable grid
             showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
+            linecolor=light_text,
             linewidth=2,
             ticks="outside",
-            tickfont=dict(family="Arial", size=12, color="rgb(82, 82, 82)"),
+            tickfont=dict(family="Arial", size=12, color=light_text),
+            gridcolor=grid_color,  # Set grid color
         ),
-        yaxis=dict(showgrid=False, zeroline=False, showline=False, showticklabels=True),
+        yaxis=dict(
+            showgrid=True,  # Enable grid
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+            gridcolor=grid_color,  # Set grid color
+            tickfont=dict(color=light_text),
+        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
-        plot_bgcolor="white",
+        plot_bgcolor=dark_bgcolor,  # Set plot background color
+        paper_bgcolor=dark_bgcolor,  # Set paper background color
+        font=dict(color=light_text),  # Set font color
+    )
+
+    # Customize the legend and title for the dark theme
+    fig.update_layout(
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
+        title=dict(
+            text=f'{interaction_metric.replace("_", " ").title()} Over Time by Country',
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+            font=dict(size=17, color=light_text),
+        ),
     )
 
     return fig
@@ -418,74 +581,169 @@ def get_metric_rank_graph(data, metric):
 def get_line_graph(data, metric):
     # Ensure the data is sorted correctly
     data = data.sort_values(by=["country", "year"])
+
+    # Determine the title based on the metric
     title = (
         "Human Development Index (HDI) Over Time by Country"
         if metric == "hdi"
         else "Gender Inequality Index (GII) Over Time by Country"
     )
+
+    # Create the line graph
     fig = px.line(
         data,
         x="year",
         y=metric,
         color="country",
-        title="Human Development Index (HDI) Over Time by Country",
+        title=title,
     )
-    yaxis_title = (
-        "Human Development Index (HDI)"
-        if metric == "hdi"
-        else "Gender Inequality Index (GII)"
-    )
+
+    # Define colors for a dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray background
+    light_text = "#e5e5e5"  # Light gray text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for grid lines
+
+    # Update layout with dark theme colors
     fig.update_layout(
         xaxis_title="Year",
-        yaxis_title=yaxis_title,
+        yaxis_title=(
+            "Human Development Index (HDI)"
+            if metric == "hdi"
+            else "Gender Inequality Index (GII)"
+        ),
         xaxis=dict(
             showline=True,
             showgrid=True,
             showticklabels=True,
-            linecolor="rgb(204, 204, 204)",
+            linecolor=grid_color,
             linewidth=2,
             ticks="outside",
-            tickfont=dict(family="Arial", size=12, color="rgb(82, 82, 82)"),
+            tickfont=dict(family="Arial", size=12, color=light_text),
         ),
-        yaxis=dict(showgrid=True, zeroline=False, showline=False, showticklabels=True),
+        yaxis=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=False,
+            showticklabels=True,
+            gridcolor=grid_color,
+            tickfont=dict(color=light_text),
+        ),
         autosize=True,
         margin=dict(autoexpand=True),
         showlegend=True,
-        plot_bgcolor="white",
+        plot_bgcolor=dark_bgcolor,
+        paper_bgcolor=dark_bgcolor,
+        font=dict(color=light_text),
+    )
+
+    # Customize the legend and title for the dark theme
+    fig.update_layout(
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
+        title=dict(
+            text=title,
+            x=0.5,
+            xanchor="center",
+            yanchor="top",
+            font=dict(size=17, color=light_text),
+        ),
     )
 
     return fig
 
+
 from plotly.subplots import make_subplots
 
+
 def plot_dual_axis_line_graph(data):
+    # Define colors for a dark theme
+    dark_bgcolor = "#1e293b"  # Dark gray background
+    light_text = "#e5e5e5"  # Light gray text
+    grid_color = "#3f3f3f"  # Slightly lighter gray for grid lines
+
     # Create a figure with secondary y-axis using make_subplots
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # Iterate through each country to plot its data
-    for country in data['country'].unique():
-        country_data = data[data['country'] == country]
+    for country in data["country"].unique():
+        country_data = data[data["country"] == country]
 
         # Add lagged excess mortality line
         fig.add_trace(
-            go.Scatter(x=country_data['date'], y=country_data['lagged_excess_mortality'], 
-                       name=f'{country} - Lagged Excess Mortality',
-                       mode='lines'),
-            secondary_y=False
+            go.Scatter(
+                x=country_data["date"],
+                y=country_data["lagged_excess_mortality"],
+                name=f"{country} - Lagged Excess Mortality",
+                mode="lines",
+            ),
+            secondary_y=False,
         )
 
         # Add lagged vaccination rate line
         fig.add_trace(
-            go.Scatter(x=country_data['date'], y=country_data['lagged_vaccination_rate'], 
-                       name=f'{country} - Lagged Vaccination Rate',
-                       mode='lines'),
-            secondary_y=True
+            go.Scatter(
+                x=country_data["date"],
+                y=country_data["lagged_vaccination_rate"],
+                name=f"{country} - Lagged Vaccination Rate",
+                mode="lines",
+            ),
+            secondary_y=True,
         )
 
-    # Add figure title and axis titles
-    fig.update_layout(title_text='Lagged Excess Mortality and Vaccination Rate Over Time by Country')
-    fig.update_xaxes(title_text='Date')
-    fig.update_yaxes(title_text='Lagged Excess Mortality', secondary_y=False)
-    fig.update_yaxes(title_text='Lagged Vaccination Rate', secondary_y=True)
+    # Update the layout for the dark theme
+    fig.update_layout(
+        paper_bgcolor=dark_bgcolor,
+        plot_bgcolor=dark_bgcolor,
+        font_color=light_text,
+        title={
+            "text": "Lagged Excess Mortality and Vaccination Rate Over Time by Country",
+            "y": 0.9,
+            "x": 0.5,
+            "xanchor": "center",
+            "yanchor": "top",
+        },
+        xaxis=dict(
+            title="Date",
+            showline=True,
+            showgrid=True,
+            showticklabels=True,
+            linecolor=light_text,
+            gridcolor=grid_color,
+            tickfont=dict(color=light_text),
+        ),
+        xaxis2=dict(
+            title="Date",
+            showline=True,
+            showgrid=True,
+            showticklabels=True,
+            linecolor=light_text,
+            gridcolor=grid_color,
+            tickfont=dict(color=light_text),
+            overlaying="x",
+            side="top",
+        ),
+        yaxis=dict(
+            title="Lagged Excess Mortality",
+            showgrid=True,
+            gridcolor=grid_color,
+        ),
+        yaxis2=dict(
+            title="Lagged Vaccination Rate",
+            overlaying="y",
+            side="right",
+            showgrid=False,
+        ),
+        legend=dict(bgcolor=dark_bgcolor, font=dict(color=light_text)),
+    )
+
+    # Customize y-axis for the dark theme
+    fig.update_yaxes(
+        title_text="Lagged Excess Mortality",
+        secondary_y=False,
+        gridcolor=grid_color,
+        tickfont=dict(color=light_text),
+    )
+    fig.update_yaxes(
+        title_text="Lagged Vaccination Rate", secondary_y=True, showgrid=False
+    )
 
     return fig
