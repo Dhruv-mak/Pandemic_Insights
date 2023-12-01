@@ -120,7 +120,7 @@ def get_query(query_index, country_list):
         data["date"] = pd.to_datetime(data["date"], format="%d-%b-%y")
         
         graphs = []
-        graphs.append(get_line_graph_new_deaths_smoothed(data))
+        # graphs.append(get_line_graph_new_deaths_smoothed(data))
         if len(interaction_type) != 0:
             graphs.append(get_interaction_graph(data, interaction_type))
             # if interaction_type == "hospital_beds_death_interaction":
