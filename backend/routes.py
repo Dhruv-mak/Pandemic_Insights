@@ -129,24 +129,28 @@ def get_query(query_index, country_list):
             #     graphs.append(get_metric_rank_graph(data, interaction_type.split("_")[0]))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     elif query_index == 4:
+        indicator = request.args.get("indicators")
         country_list = country_list.split(",")
         country_list = ",".join([f"'{country}'" for country in country_list])
         with open("queries/query4.sql", "r") as f:
             query = f.read()
         query = query.replace(":country_list", country_list)
         data = pd.read_sql(query, db_obj.engine)
+        data = data.sort_values(by=["country", "year"])
         graphs = []
-        graphs.append(get_line_graph(data, "hdi"))
+        graphs.append(get_line_graph(data, "hdi", indicator))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     elif query_index == 5:
+        indicator = request.args.get("indicators")
         country_list = country_list.split(",")
         country_list = ",".join([f"'{country}'" for country in country_list])
         with open("queries/query5.sql", "r") as f:
             query = f.read()
         query = query.replace(":country_list", country_list)
         data = pd.read_sql(query, db_obj.engine)
+        data = data.sort_values(by=["country", "year"])
         graphs = []
-        graphs.append(get_line_graph(data, "gii"))
+        graphs.append(get_line_graph(data, "gii", indicator))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     elif query_index == 6:
         country_list = country_list.split(",")

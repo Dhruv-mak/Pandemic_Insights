@@ -65,15 +65,6 @@ final2 as
 FROM HarmonicMeans join final1 on final1.country= HarmonicMeans.country and final1.year = HarmonicMeans.year
 )
 
-select * from final2
+select final2.country, final2.year, GII, le,eys,mys,gnipc,abr,mmr,prf,sef,prm,sem,lfprf,lfprm from final2 join "DMAKWANA"."HDI" h ON final2.country = h.country AND Final2.year = h.year
+join "DMAKWANA"."Inequality" e ON final2.country = e.country AND Final2.year = e.year
 order by country, year
-
-
-
-
-
-
-
-
-
-
