@@ -46,8 +46,20 @@ const Query1 = () => {
   });
   return (
     <div className="Visual mx-28 ">
+      <div className="w-[75%] pl-3 pt-10 text-2xl text-slate-900 font-extrabold">
+        Pandemic Pulse Tracker
+      </div>
+      <div className="w-[75%] pl-3 pt-5 text-l text-slate-900 font-bold">
+        This section of our webpage presents a 'pulse tracker' on the current
+        state of the pandemic globally. You can use this application to monitor
+        and analyze COVID-19 data trends such as new cases, testing rates, and
+        test positivity rates across different countries. With data on smoothed
+        case averages and categorized testing volumes, this tool offers vital
+        insights into the pandemic's status and testing efficiency.
+      </div>
+
       <div className="flex">
-        <div className="inlineml-28 mt-10">
+        <div className="inline ml-10 mt-10">
           <DropdownCheckbox
             buttonText="Select a Country"
             checkboxItems={checkboxItems}

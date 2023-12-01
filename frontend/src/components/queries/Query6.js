@@ -44,7 +44,7 @@ const Query2 = () => {
   };
 
   const handleInteractionTypeCheck = (itemID) => {
-    setCheckedInteractionTypes([itemID])
+    setCheckedInteractionTypes([itemID]);
   };
   const checkboxItems = countries.map((country) => {
     return {
@@ -70,6 +70,17 @@ const Query2 = () => {
   });
   return (
     <div className="Visual mx-28">
+      <div className="w-[75%] pl-3 pt-10 text-2xl text-slate-900 font-extrabold">
+        COVID-19 Mortality and Health-Economic Analysis (CMHE)
+      </div>
+      <div className="w-[75%] pl-3 pt-5 text-l text-slate-900 font-bold">
+        This section focuses on analyzing COVID-19 mortality rates in relation
+        to various health and economic parameters, such as GDP per capita,
+        cardiovascular death rates, diabetes prevalence, and hospital bed
+        availability. The inclusion of ranking metrics based on these
+        interactions further emphasizes its analytical nature in correlating
+        health outcomes with economic factors.
+      </div>
       <div className="ml-10 mt-10">
         <DropdownCheckbox
           buttonText="Select a Country"
@@ -77,19 +88,26 @@ const Query2 = () => {
           handleCheck={handleCountryCheck}
         />
         <div className="mx-5 inline">
-        <DropdownButton
-          buttonText="Select an Emission Type"
-          items={emissionTypeItems}
-          handleClick={handleInteractionTypeCheck}
-        />
+          <DropdownButton
+            buttonText="Select an Interaction"
+            items={emissionTypeItems}
+            handleClick={handleInteractionTypeCheck}
+          />
         </div>
       </div>
       <div className="flex flex-col">
         {queryGraph.map((graph, index) => (
-          <div className="mx-auto mt-5 rounded-2xl hover:shadow-2xl overflow-hidden" key={index}>
-            <Plot 
-              data={graph.data} 
-              layout={{...graph.layout, width: window.innerWidth * 0.65, height: window.innerHeight * 0.7}}
+          <div
+            className="mx-auto mt-5 rounded-2xl hover:shadow-2xl overflow-hidden"
+            key={index}
+          >
+            <Plot
+              data={graph.data}
+              layout={{
+                ...graph.layout,
+                width: window.innerWidth * 0.65,
+                height: window.innerHeight * 0.7,
+              }}
             />
           </div>
         ))}

@@ -9,12 +9,12 @@ import Query5 from "./queries/Query5";
 import Query6 from "./queries/Query6";
 export default function Visualization({ userType }) {
   const tabs = [
-    { id: "query1", href: "#query1", label: "Query1" },
-    { id: "query2", href: "#query2", label: "Query2" },
-    { id: "query3", href: "#query3", label: "Query3" },
-    { id: "query4", href: "#query4", label: "Query4" },
-    { id: "query5", href: "#query5", label: "Query5" },
-    { id: "query6", href: "#query6", label: "Query6" },
+    { id: "query1", href: "#query1", label: "PPT" },
+    { id: "query2", href: "#query2", label: "GII Calculator" },
+    { id: "query3", href: "#query3", label: "HDI Calculator" },
+    { id: "query4", href: "#query4", label: "VIEM" },
+    { id: "query5", href: "#query5", label: "CEA" },
+    { id: "query6", href: "#query6", label: "CMHE" },
   ];
 
   const queryMap = {

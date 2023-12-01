@@ -2,7 +2,7 @@ import React from "react";
 import DropdownCheckbox from "../DropdownCheckbox";
 import { get_coutry_list } from "../../services/api";
 import { get_query } from "../../services/api";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Plot from "react-plotly.js";
 
 const Query1 = () => {
@@ -45,7 +45,18 @@ const Query1 = () => {
   });
   return (
     <div className="Visual mx-28">
-      <div className="ml-36 mt-10">
+      <div className="w-[75%] pl-3 pt-10 text-2xl text-slate-900 font-extrabold">
+        GII Calculator (Gender Inequality Index (GII) Calculator)
+      </div>
+      <div className="w-[75%] pl-3 pt-5 text-l text-slate-900 font-bold">
+        This section is designed to compute the Gender Inequality Index for
+        selected countries. It assesses disparities in health, empowerment, and
+        labor force participation between genders. The calculation meticulously
+        adjusts for zero and extreme values and uses geometric and harmonic mean
+        calculations to ensure accuracy. It offers a comprehensive measure of
+        gender-based inequality, crucial for social research and policy-making.
+      </div>
+      <div className="ml-10 mt-10">
         <DropdownCheckbox
           buttonText="Select a Country"
           checkboxItems={checkboxItems}
@@ -55,9 +66,13 @@ const Query1 = () => {
       <div className="flex flex-col">
         {queryGraph.map((graph, index) => (
           <div className="mx-auto" key={index}>
-            <Plot 
-              data={graph.data} 
-              layout={{...graph.layout, width: window.innerWidth * 0.65, height: window.innerHeight * 0.7}}
+            <Plot
+              data={graph.data}
+              layout={{
+                ...graph.layout,
+                width: window.innerWidth * 0.65,
+                height: window.innerHeight * 0.7,
+              }}
             />
           </div>
         ))}
