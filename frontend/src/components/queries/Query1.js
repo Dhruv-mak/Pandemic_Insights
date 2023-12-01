@@ -55,9 +55,9 @@ const Query1 = () => {
           />
         </div>
 
-        <div className="inline ml-12 mt-8 pt-2">
+        {/* <div className="inline ml-12 mt-8 pt-2">
           <DatePicker />
-        </div>
+        </div> */}
       </div>
       <div className="flex flex-col">
         {queryGraph.map((graph, index) => (
