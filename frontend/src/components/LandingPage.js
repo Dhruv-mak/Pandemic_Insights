@@ -14,7 +14,7 @@ const LandingPage = ({ childs }) => {
       >
         <div className="absolute inset-0 bg-black opacity-0"></div>
         {/* {childs} */}
-        <div className="pt-[10rem] pl-40 w-3/5 text- relative h-[100vh]">
+        <div className="pt-[16rem] pl-40 w-3/5 text- relative h-[100vh]">
           <h1 className="text-8xl text-slate-900 font-bold pb-20">
             Pandemic Insights
           </h1>
