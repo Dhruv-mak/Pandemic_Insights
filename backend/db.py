@@ -13,7 +13,7 @@ class DbUtils:
         self.DB_HOST = os.getenv("DB_HOST")
         self.DB_PORT = os.getenv("DB_PORT")
         self.DB_SDN = os.getenv("DB_SDN")
-        self.DB_URL = f"oracle+oracledb://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_SDN}"
+        self.DB_URL = f"mysql+pymysql://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_SDN}"
         self.engine = create_engine(self.DB_URL)
     
     class BASE(DeclarativeBase):
