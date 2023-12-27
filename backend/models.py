@@ -7,6 +7,7 @@ from sqlalchemy import (
     Integer,
     DATE,
     Index,
+    BIGINT
 )
 
 BASE = db_obj.BASE
@@ -90,8 +91,8 @@ class Vaccination(BASE):
     __tablename__ = "Vaccination"
     date = mapped_column(DATE)
     location = mapped_column(String(50))
-    total_vaccinations = mapped_column(Integer)
-    people_vaccinated = mapped_column(Integer)
+    total_vaccinations = mapped_column(BIGINT)
+    people_vaccinated = mapped_column(BIGINT)
     daily_vaccinations = mapped_column(Integer)
     daily_people_vaccinated = mapped_column(Integer)
 

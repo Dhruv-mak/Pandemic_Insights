@@ -9,16 +9,16 @@ WITH FemaleIndicators AS (
         POWER(((10 / GREATEST(MMR, 0.1)) * (1 / GREATEST(ABR, 0.1))), 1/2) AS Health,
         POWER((prf * sef), 1/2) AS Empowerment,
         lfprf
-    FROM "DMAKWANA"."Inequality"
+    FROM Inequality
     WHERE MMR BETWEEN 10 AND 1000 AND ABR > 0.1 -- Ensure ABR is greater than 0.1
     AND country IN (:country_list)
 ),
 MaleIndicators AS (
     SELECT
-        country,year,
+        country, year,
         POWER((prm * sem), 1/2) AS Empowerment,
         LFPRM
-    FROM "DMAKWANA"."Inequality"
+    FROM Inequality
     WHERE country IN (:country_list)
 ),
 FemaleGII AS (
@@ -45,11 +45,11 @@ HarmonicMeans AS (
     JOIN MaleGII M ON F.country = M.country AND F.year = M.year
 ),
 
-Final as(
+final as(
 select country, year ,((POWER(((10/mmr) * (1/abr)), 1/2)) + 1) AS HealthX,
  ((POWER((prf * sef), 1/2) + POWER((prf * sef), 1/2))/2) AS empX,
  ((lfprf + lfprm)/2) AS lfprX
-from "DMAKWANA"."Inequality"
+from Inequality
 WHERE country IN (:country_list)),
 
 final1 as ( select country, year, POWER((healthX * empX * lfprX), 1/3) as GFM from final),
@@ -65,6 +65,6 @@ final2 as
 FROM HarmonicMeans join final1 on final1.country= HarmonicMeans.country and final1.year = HarmonicMeans.year
 )
 
-select final2.country, final2.year, GII, le,eys,mys,gnipc,abr,mmr,prf,sef,prm,sem,lfprf,lfprm from final2 join "DMAKWANA"."HDI" h ON final2.country = h.country AND Final2.year = h.year
-join "DMAKWANA"."Inequality" e ON final2.country = e.country AND Final2.year = e.year
+select final2.country, final2.year, GII, le,eys,mys,gnipc,abr,mmr,prf,sef,prm,sem,lfprf,lfprm from final2 join HDI h ON final2.country = h.country AND final2.year = h.year
+join Inequality e ON final2.country = e.country AND final2.year = e.year
 order by country, year

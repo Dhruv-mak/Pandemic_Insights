@@ -10,7 +10,7 @@ def get_line_graph_query1(data):
         data,
         x="date",
         y="test_positivity_rate",
-        color="country",
+        color="COUNTRY",
         title="Test Positivity Rate Over Time by Country",
     )
 
@@ -219,11 +219,11 @@ def get_line_graph_testing_quartile(data):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # Get unique countries
-    countries = data['country'].unique()
+    countries = data['COUNTRY'].unique()
 
     # Loop through each country to add traces
     for country in countries:
-        country_data = data[data['country'] == country]
+        country_data = data[data['COUNTRY'] == country]
 
         # Add trace for 'testing_quartile'
         fig.add_trace(
@@ -303,7 +303,7 @@ def new_cases_smoothed_query1(data):
         data,
         x="date",
         y="new_cases_smoothed",
-        color="country",
+        color="COUNTRY",
         title="7-Day Average of New Cases Over Time by Country",
     )
 
@@ -592,7 +592,7 @@ def get_interaction_graph(data, interaction_metric):
         data,
         x="date",
         y=interaction_metric,
-        color="location",
+        color="LOCATION",
         title=f'{interaction_metric.replace("_", " ").title()} Over Time by Country',
     )
 

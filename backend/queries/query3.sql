@@ -1,24 +1,24 @@
 WITH cases_population AS (
     SELECT
-        c."date",
-        c."LOCATION",
-        c."NEW_DEATHS",
-        "POPULATION"
+        c.date,
+        c.LOCATION,
+        c.NEW_DEATHS,
+        POPULATION
     FROM
-        "DMAKWANA"."Cases" c
-        JOIN "DMAKWANA"."Population" p ON p."COUNTRY" = c."LOCATION"
-        AND p."COUNTRY" IN (:country_list)
+        Cases c
+        JOIN Population p ON p.COUNTRY = c.LOCATION
+        AND p.COUNTRY IN (:country_list)
 ),
 SmoothedCases AS (
     SELECT
-        cp."LOCATION",
-        cp."date",
-        cp."NEW_DEATHS",
+        cp.LOCATION,
+        cp.date,
+        cp.NEW_DEATHS,
         (
-            SUM(cp."NEW_DEATHS") OVER (
-                PARTITION BY cp."LOCATION"
+            SUM(cp.NEW_DEATHS) OVER (
+                PARTITION BY cp.LOCATION
                 ORDER BY
-                    cp."date" ROWS BETWEEN 6 PRECEDING
+                    cp.date ROWS BETWEEN 6 PRECEDING
                     AND CURRENT ROW
             ) / 7
         ) AS NEW_DEATHS_smoothed,
@@ -29,7 +29,7 @@ SmoothedCases AS (
 CasesPerMillion AS (
     SELECT
         LOCATION,
-        "date",
+        date,
         NEW_DEATHS_smoothed,
         (NEW_DEATHS_smoothed / population) * 10000 AS NEW_DEATHS_smoothed_per_million
     FROM
@@ -38,14 +38,14 @@ CasesPerMillion AS (
 final_to_use AS (
     SELECT
         location,
-        "date",
+        date,
         NEW_DEATHS_smoothed_per_million
     FROM
         CasesPerMillion
 ),
 EconomicHealthAnalysis AS (
     SELECT
-        c."date",
+        c.date,
         c.location,
         c.new_deaths_smoothed_per_million,
         d.gdp_per_capita,
@@ -65,10 +65,10 @@ EconomicHealthAnalysis AS (
         ) AS hospital_beds_death_interaction
     FROM
         final_to_use c
-        INNER JOIN "DMAKWANA"."Parameters" d ON c.location = d."COUNTRY"
+        INNER JOIN Parameters d ON c.location = d.COUNTRY
 )
 SELECT
-    "date",
+    date,
     location,
     new_deaths_smoothed_per_million,
     gdp_death_interaction,
@@ -99,4 +99,4 @@ FROM
     EconomicHealthAnalysis
 ORDER BY
     location,
-    "date"
+    date

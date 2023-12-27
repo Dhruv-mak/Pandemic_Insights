@@ -16,7 +16,7 @@ WITH HDI_Components AS (
             ELSE 0
         END AS income_index
     FROM 
-        "DMAKWANA"."HDI"
+        HDI
     WHERE country IN (:country_list)
 ),
 HDI_Calculations AS (
@@ -37,12 +37,11 @@ SELECT
     year,
     -- Calculate the final HDI as the geometric mean of the three indices
     -- Check for negative values before using POWER
+    -- ROUND function is used to truncate to 3 decimal places
     CASE 
         WHEN life_index > 0 AND education_index > 0 AND income_index > 0 THEN 
-            TRUNC(POWER(life_index * education_index * income_index, 1/3), 3)
+            ROUND(POWER(life_index * education_index * income_index, 1/3), 3)
         ELSE NULL
     END AS hdi
 FROM 
-    HDI_Calculations
-
-
+    HDI_Calculations;

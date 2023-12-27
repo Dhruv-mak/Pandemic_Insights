@@ -1,20 +1,20 @@
 WITH VaccinationExcessMortality AS (
     SELECT 
-        e."date",
-        e."COUNTRY",
-        e."CUMULATIVE_ESTIMATED_DAILY_EXCESS_DEATHS_PER_100K",
+        e.date,
+        e.COUNTRY,
+        e.CUMULATIVE_ESTIMATED_DAILY_EXCESS_DEATHS_PER_100K,
         v.PEOPLE_VACCINATED,
-        LAG(e."CUMULATIVE_ESTIMATED_DAILY_EXCESS_DEATHS_PER_100K", 7) OVER (PARTITION BY e."COUNTRY" ORDER BY e."date") AS lagged_excess_mortality,
-        LAG(v.PEOPLE_VACCINATED, 7) OVER (PARTITION BY e."COUNTRY" ORDER BY e."date") AS lagged_vaccination_rate
+        LAG(e.CUMULATIVE_ESTIMATED_DAILY_EXCESS_DEATHS_PER_100K, 7) OVER (PARTITION BY e.COUNTRY ORDER BY e.date) AS lagged_excess_mortality,
+        LAG(v.PEOPLE_VACCINATED, 7) OVER (PARTITION BY e.COUNTRY ORDER BY e.date) AS lagged_vaccination_rate
     FROM 
-      "DMAKWANA"."Mortality" e
+      Mortality e
     INNER JOIN 
-        "DMAKWANA"."Vaccination" v ON e."COUNTRY" = v."LOCATION" AND e."date" = v."date"
-        AND e."COUNTRY" IN (:country_list)
+        Vaccination v ON e.COUNTRY = v.LOCATION AND e.date = v.date
+        AND e.COUNTRY IN (:country_list)
 ),
 FINAL1 AS(
 SELECT 
-    "date",
+    date,
     country,
     CUMULATIVE_ESTIMATED_DAILY_EXCESS_DEATHS_PER_100K,
     PEOPLE_VACCINATED,
@@ -24,7 +24,7 @@ SELECT
     (PEOPLE_VACCINATED - lagged_vaccination_rate) AS change_in_vaccination_rate
 FROM 
     VaccinationExcessMortality)
-SELECT "date",
+SELECT date,
     country,
     CUMULATIVE_ESTIMATED_DAILY_EXCESS_DEATHS_PER_100K,
     PEOPLE_VACCINATED,

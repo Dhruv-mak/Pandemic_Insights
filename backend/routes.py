@@ -150,7 +150,7 @@ def get_query(query_index, country_list):
         data = pd.read_sql(query, db_obj.engine)
         data = data.sort_values(by=["country", "year"])
         graphs = []
-        graphs.append(get_line_graph(data, "gii", indicator))
+        graphs.append(get_line_graph(data, "GII", indicator))
         return json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
     elif query_index == 6:
         country_list = country_list.split(",")
