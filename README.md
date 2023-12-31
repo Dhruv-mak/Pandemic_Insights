@@ -6,7 +6,7 @@ Welcome to the GitHub repository for our semester-long project in COP5725 - Data
 This project is a comprehensive database and visualization tool developed for COP5725 - Database Management Systems. It provides insightful and interactive trend analysis of the various impacts of COVID-19.
 
 This website is hosted on AWS and can be accessed via:
-[Live Website](http://18.205.28.126:3000/)
+[Live Website](https://pandemic-insights.vercel.app/)
 
 ![Screenshot of the website](frontend/src/assets/images/screenshot.png)
 
