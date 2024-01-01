@@ -1,6 +1,6 @@
 export async function get_query(index, countryList, params = {}) {
   try {
-    const url = new URL("http://20.96.176.239:5000/api/get_query/" + index + "/" + countryList);
+    const url = new URL("https://20.96.176.239/api/get_query/" + index + "/" + countryList);
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
     
     const response = await fetch(url);
@@ -17,7 +17,7 @@ export async function get_query(index, countryList, params = {}) {
 
 export async function get_coutry_list(index) {
   try {
-    const response = await fetch("http://20.96.176.239:5000/api/get_countries/" + index);
+    const response = await fetch("https://20.96.176.239/api/get_countries/" + index);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -31,7 +31,7 @@ export async function get_coutry_list(index) {
 
 export async function get_count() {
   try {
-    const response = await fetch("http://20.96.176.239:5000/api/get_count");
+    const response = await fetch("https://20.96.176.239/api/get_count");
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
