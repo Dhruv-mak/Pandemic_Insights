@@ -1,8 +1,4 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const API_URL = process.env.API_URL;
+const API_URL = "https://20.96.176.239/api";
 
 export async function get_query(index, countryList, params = {}) {
   try {
