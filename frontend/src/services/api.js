@@ -1,4 +1,4 @@
-const API_URL = "https://20.96.176.239/api";
+const API_URL = "https://20.96.176.239/pandemic-insights/";
 
 export async function get_query(index, countryList, params = {}) {
   try {
